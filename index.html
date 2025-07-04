@@ -188,6 +188,13 @@
             .typing-effect {
                 font-size: 1.5rem;
             }
+            .project-card {
+                min-height: 260px;
+            }
+            .flip-card,
+            .flip-card-inner {
+                min-height: 340px !important;
+            }
         }
     </style>
 </head>
@@ -199,17 +206,21 @@
     <div class="fixed inset-0 pointer-events-none z-0" id="particles"></div>
     
     <!-- Navigation -->
-    <nav class="nav-glass fixed top-0 left-1/2 transform -translate-x-1/2 z-50 mt-6 rounded-full px-8 py-3 shadow-2xl">
-        <div class="flex space-x-8">
-            <a href="#about" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">About</a>
-            <a href="#education" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Education</a>
-            <a href="#projects" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Projects</a>
-            <a href="#skills" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Skills</a>
-            <a href="#contact" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Contact</a>
+    <nav class="nav-glass fixed top-0 left-1/2 transform -translate-x-1/2 z-50 mt-6 rounded-full px-8 py-3 shadow-2xl w-[95vw] max-w-3xl">
+        <div class="flex items-center justify-between">
+            <!-- Desktop Nav Links -->
+            <div class="flex space-x-8 nav-links-desktop">
+                <a href="#about" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">About</a>
+                <a href="#education" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Education</a>
+                <a href="#projects" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Projects</a>
+                <a href="#skills" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Skills</a>
+                <a href="#contact" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Contact</a>
+            </div>
+            <!-- Theme Toggle Button -->
+            <button id="theme-toggle" class="bg-primary-500 text-white p-2 rounded-full hover:bg-primary-600 transition-all duration-300 shadow-lg">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
-        <button id="theme-toggle" class="absolute -right-2 -top-2 bg-primary-500 text-white p-2 rounded-full hover:bg-primary-600 transition-all duration-300 shadow-lg">
-            <i class="fas fa-moon"></i>
-        </button>
     </nav>
 
     <!-- Main Content -->
@@ -333,62 +344,117 @@
                 <span class="hero-gradient">Projects & Experience</span>
             </h2>
             
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="project-card p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-slide-up">
-                    <div class="flex items-center mb-4">
-                        <span class="text-2xl mr-3">🔐</span>
-                        <h3 class="text-xl font-semibold text-primary-300">SecureDoc – Master Thesis Project</h3>
-                    </div>
-                    <p class="text-gray-300 mb-4 font-medium">Smart Server Monitoring & Document Security Platform</p>
-                    <ul class="space-y-2 text-gray-400 mb-6">
-                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Integrated server monitoring, AI-based Intrusion Detection System, and document management</li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Used PyTorch, FastAPI, Vue.js, and RAG architecture</li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Developed secure document classification, user roles, and real-time alerts</li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Initially a startup concept; now being prepared as an open-source platform</li>
-                    </ul>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">PyTorch</span>
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">FastAPI</span>
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">Vue.js</span>
-                    </div>
-                </div>
-                
-                <div class="project-card p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-slide-up">
-                    <div class="flex items-center mb-4">
-                        <span class="text-2xl mr-3">🧠</span>
-                        <h3 class="text-xl font-semibold text-primary-300">Audio Deepfake Detection</h3>
-                    </div>
-                    <p class="text-gray-400 mb-6">Built a hybrid CNN + LSTM model to detect synthetic voices in audio with advanced preprocessing and time-series analysis.</p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">CNN</span>
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">LSTM</span>
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">PyTorch</span>
+            <!-- Loki's Project List -->
+            <div class="space-y-16">
+                <!-- Academic & Thesis Projects -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🎓</span>Academic & Thesis Projects</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">SecureDoc – Graduation Thesis</h4>
+                            <p class="text-gray-300 mb-2">End-to-end platform for secure document management and server monitoring. Integrated Intrusion Detection System (IDS) for real-time threat detection.</p>
+                            <p class="text-gray-400 mb-2">Stack: Flask (API), React, Scikit-learn, Kaggle (Cloud training)</p>
+                        </div>
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Intrusion Detection System using AI & Deep Learning</h4>
+                            <p class="text-gray-300 mb-2">AI-based model to detect various cyberattack patterns. Used deep learning architectures for anomaly detection.</p>
+                        </div>
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">360° Virtual Tour of the University</h4>
+                            <p class="text-gray-300 mb-2">Interactive web experience built with Panolens.js. Helps new students and visitors explore the university remotely.</p>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="project-card p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-slide-up">
-                    <div class="flex items-center mb-4">
-                        <span class="text-2xl mr-3">🛰️</span>
-                        <h3 class="text-xl font-semibold text-primary-300">Food Traceability Web App</h3>
-                    </div>
-                    <p class="text-gray-400 mb-6">Hackathon finalist project tracking food journey via LOT numbers with AI-generated traceability timeline and smart recommendations.</p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">Flask</span>
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">Next.js</span>
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">LangChain</span>
+                <!-- AI & Machine Learning Projects -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🧠</span>AI & Machine Learning Projects</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Audio Deepfake Detection</h4>
+                            <p class="text-gray-300 mb-2">Developed a CNN + LSTM hybrid model to detect synthetic audio. Presented as part of academic research on media authentication.</p>
+                        </div>
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">FastAPI Energy Consumption Prediction App</h4>
+                            <p class="text-gray-300 mb-2">Web app with data upload, model training, and evaluation modules. Forecasts energy usage using historical data.</p>
+                        </div>
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Food Traceability Web App (Hackathon Project)</h4>
+                            <p class="text-gray-300 mb-2">Tracks food products using LOT numbers and verification statuses. Flask + LangChain for AI insights, Next.js frontend, Supabase for storage. Suggests meal plans and flags misclassifications using Gemini API.</p>
+                        </div>
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Arabic Finetuning of Mistral NeMo Model</h4>
+                            <p class="text-gray-300 mb-2">Finetuned Mistral NeMo for Arabic NLP tasks. Improved performance on classification and generation benchmarks.</p>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="project-card p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-slide-up">
-                    <div class="flex items-center mb-4">
-                        <span class="text-2xl mr-3">🎮</span>
-                        <h3 class="text-xl font-semibold text-primary-300">PRISM - Indie Game</h3>
+                <!-- Software & Desktop Apps -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🖥️</span>Software & Desktop Apps</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Voice-enabled AI Desktop Assistant</h4>
+                            <p class="text-gray-300 mb-2">PyQt5 GUI with integrated voice recognition and text-to-speech. Gemini API for chat, Azure TTS, YouTube & local music support.</p>
+                        </div>
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Student Registration App</h4>
+                            <p class="text-gray-300 mb-2">PyQt5 desktop interface with OpenCV image capture. SQL database backend for secure student data storage.</p>
+                        </div>
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Basic Document Search Engine</h4>
+                            <p class="text-gray-300 mb-2">Built versions in C# and Python for keyword-based document retrieval. Used for quick demo and educational purposes.</p>
+                        </div>
                     </div>
-                    <p class="text-gray-400 mb-6">Puzzle-platformer focused on portals and gravity challenges with minimal visuals and dynamic level logic built in Unity.</p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">Unity</span>
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">C#</span>
-                        <span class="skill-pill px-3 py-1 text-xs rounded-full">Game Dev</span>
+                </div>
+                <!-- Web Platforms -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🌐</span>Web Platforms</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Portfolio Website – lokmantouil.me</h4>
+                            <p class="text-gray-300 mb-2">Personal site showcasing projects, resume, and achievements. Interactive and clean design aimed at recruiters and collaborators.</p>
+                        </div>
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Startup turned Open Source Project</h4>
+                            <p class="text-gray-300 mb-2">Originally developed as a private platform, later opened to the public. Promotes community collaboration and transparency.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- IoT & Surveillance -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">📡</span>IoT & Surveillance</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">CowGuard – Farm Surveillance System</h4>
+                            <p class="text-gray-300 mb-2">Designed and implemented the backend API for monitoring platform. SQL schema tracks cow states (eating, sleeping, licking, etc.) with admin, vet, and farmer roles.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Teaching & Workshops -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🧑‍🏫</span>Teaching & Workshops</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Cybersecurity Fundamentals (Arabic)</h4>
+                            <p class="text-gray-300 mb-2">Delivered a beginner-friendly course for non-technical officers. Covered basics like network security, phishing, and safe practices.</p>
+                        </div>
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Python & ML Basics for PhD Students</h4>
+                            <p class="text-gray-300 mb-2">Taught fundamentals of Python and introduced ML concepts. Emphasized practical, research-oriented workflows.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Game Dev -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🎮</span>Game Dev</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">PRISM</h4>
+                            <p class="text-gray-300 mb-2">Puzzle-platformer focused on portal-based mechanics and dynamic physics. Unity game with minimalist art style and gravity-defying challenges.</p>
+                        </div>
+                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Procedural Dungeon Generator (WIP)</h4>
+                            <p class="text-gray-300 mb-2">Uses constraint programming to generate diverse dungeon layouts. Designed for Unity game prototypes.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -768,6 +834,7 @@
                 particlesContainer.appendChild(star);
             }
         }
+
     </script>
 </body>
 </html>

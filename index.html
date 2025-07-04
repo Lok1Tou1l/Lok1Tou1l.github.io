@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lokman Touil - AI Engineer & Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#1a1a1a',
+                            700: '#2a2a2a',
+                            600: '#3a3a3a',
+                        },
+                        primary: {
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'gradient': 'gradient 3s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        gradient: {
+                            '0%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                            '100%': { backgroundPosition: '0% 50%' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .flip-card {
+            perspective: 1000px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .flip-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        .nav-glass {
+            backdrop-filter: blur(20px);
+            background-color: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .section-divider {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.5), transparent);
+        }
+        .skill-pill {
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        .skill-pill:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            background: linear-gradient(45deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2));
+        }
+        .floating-card {
+            transition: transform 0.3s ease;
+        }
+        .floating-card:hover {
+            transform: translateY(-5px) rotate(1deg);
+        }
+        .project-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(42, 42, 42, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .typing-effect {
+            overflow: hidden;
+            border-right: 2px solid #3b82f6;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #3b82f6; }
+        }
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .glass-card {
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .progress-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            z-index: 100;
+            transition: width 0.1s ease;
+        }
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            background: rgba(59, 130, 246, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        .star {
+            position: absolute;
+            pointer-events: none;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            box-shadow: 0 0 6px 2px white, 0 0 12px 4px #60a5fa44;
+            animation: twinkle 2s infinite ease-in-out;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.3; }
+        }
+        @media (max-width: 768px) {
+            .hero-gradient {
+                font-size: 2rem;
+            }
+            .typing-effect {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-200 min-h-screen font-sans relative overflow-x-hidden">
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <!-- Animated Background Particles -->
+    <div class="fixed inset-0 pointer-events-none z-0" id="particles"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav-glass fixed top-0 left-1/2 transform -translate-x-1/2 z-50 mt-6 rounded-full px-8 py-3 shadow-2xl">
+        <div class="flex space-x-8">
+            <a href="#about" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">About</a>
+            <a href="#education" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Education</a>
+            <a href="#projects" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Projects</a>
+            <a href="#skills" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Skills</a>
+            <a href="#contact" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Contact</a>
+        </div>
+        <button id="theme-toggle" class="absolute -right-2 -top-2 bg-primary-500 text-white p-2 rounded-full hover:bg-primary-600 transition-all duration-300 shadow-lg">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-32 pb-20 relative z-10">
+        <!-- Hero Section -->
+        <section id="about" class="flex flex-col md:flex-row items-center justify-between gap-12 mb-20 animate-fade-in">
+            <div class="md:w-1/2">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-slide-up">
+                    <span class="hero-gradient">Lokman</span> 
+                    <span class="text-primary-400">TOUIL</span>
+                </h1>
+                <h2 class="text-2xl md:text-3xl text-primary-300 mb-8 typing-effect">AI Engineer & Software Developer</h2>
+                
+                <div class="space-y-3 mb-8 animate-slide-up">
+                    <p class="flex items-center group">
+                        <i class="fas fa-map-marker-alt mr-3 text-primary-400 group-hover:scale-110 transition-transform"></i> 
+                        <span class="group-hover:text-primary-300 transition-colors">El Tarf, Algeria</span>
+                    </p>
+                    <p class="flex items-center group">
+                        <i class="fas fa-phone mr-3 text-primary-400 group-hover:scale-110 transition-transform"></i> 
+                        <span class="group-hover:text-primary-300 transition-colors">+213 799126826</span>
+                    </p>
+                    <p class="flex items-center group">
+                        <i class="fas fa-envelope mr-3 text-primary-400 group-hover:scale-110 transition-transform"></i> 
+                        <span class="group-hover:text-primary-300 transition-colors">touillokman14@gmail.com</span>
+                    </p>
+                    <p class="flex items-center group">
+                        <i class="fab fa-linkedin mr-3 text-primary-400 group-hover:scale-110 transition-transform"></i> 
+                        <a href="https://linkedin.com/in/your-profile" target="_blank" class="hover:text-primary-300 transition-colors">Lokman Touil</a>
+                    </p>
+                    <p class="flex items-center group">
+                        <i class="fab fa-github mr-3 text-primary-400 group-hover:scale-110 transition-transform"></i> 
+                        <a href="https://github.com/Lok1Tou1l" target="_blank" class="hover:text-primary-300 transition-colors">Lok1Tou1l</a>
+                    </p>
+                </div>
+
+                <p class="text-gray-300 mb-8 leading-relaxed text-lg animate-slide-up">
+                    AI Engineer & Software Developer with a Master's in Artificial Intelligence. Strong background in machine learning, 
+                    full-stack development, and telecom systems. Experienced in building smart platforms (e.g., SecureDoc), 
+                    procedural game systems, and AI-enhanced web apps. Passionate about applying AI in real-world domains like 
+                    security, education, and infrastructure.
+                </p>
+
+                <div class="flex space-x-4 animate-slide-up">
+                    <a href="#contact" class="bg-primary-500 hover:bg-primary-600 text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        Get In Touch
+                    </a>
+                    <a href="#projects" class="border-2 border-primary-400 text-primary-400 hover:bg-primary-400 hover:text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
+                        View Projects
+                    </a>
+                </div>
+            </div>
+
+            <!-- Enhanced Flip Card -->
+            <div id="floating-card" class="floating-card flip-card md:w-96 h-[600px] relative animate-float">
+                <div class="flip-card-inner w-full h-full">
+                    <div class="flip-card-front glass-card rounded-2xl shadow-2xl overflow-hidden">
+                        <img src="lokman.jpg" 
+                             alt="Developer working" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-2xl font-bold mb-2">Lokman Touil</h3>
+                            <p class="text-primary-300 font-medium">AI Engineer & Developer</p>
+                        </div>
+                    </div>
+                    <div class="flip-card-back glass-card rounded-2xl shadow-2xl overflow-hidden">
+                        <img src="front_arcana.png" 
+                             alt="Developer working" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider my-16">
+
+        <!-- Education -->
+        <section id="education" class="mb-20 animate-fade-in">
+            <h2 class="text-4xl font-bold mb-12 flex items-center">
+                <i class="fas fa-graduation-cap mr-4 text-primary-400"></i> 
+                <span class="hero-gradient">Education</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="project-card p-8 rounded-2xl shadow-xl border-l-4 border-primary-400 animate-slide-up">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-brain text-primary-400 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold">Master's in Artificial Intelligence</h3>
+                    </div>
+                    <p class="text-gray-400 mb-2">University of Chadli Bendjedid, El Tarf, Algeria</p>
+                    <p class="text-primary-300 font-medium">2023 – 2025</p>
+                    <div class="mt-4 w-full bg-gray-700 rounded-full h-2">
+                        <div class="progress-bar w-4/5 rounded-full"></div>
+                    </div>
+                </div>
+                
+                <div class="project-card p-8 rounded-2xl shadow-xl border-l-4 border-primary-400 animate-slide-up">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-laptop-code text-primary-400 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold">Bachelor's in Computer Science</h3>
+                    </div>
+                    <p class="text-gray-400 mb-2">University of Chadli Bendjedid, El Tarf, Algeria</p>
+                    <p class="text-primary-300 font-medium">2020 – 2023</p>
+                    <div class="mt-4 w-full bg-gray-700 rounded-full h-2">
+                        <div class="progress-bar w-full rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider my-16">
+
+        <!-- Projects & Experience -->
+        <section id="projects" class="mb-20 animate-fade-in">
+            <h2 class="text-4xl font-bold mb-12 flex items-center">
+                <i class="fas fa-briefcase mr-4 text-primary-400"></i> 
+                <span class="hero-gradient">Projects & Experience</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="project-card p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-slide-up">
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl mr-3">🔐</span>
+                        <h3 class="text-xl font-semibold text-primary-300">SecureDoc – Master Thesis Project</h3>
+                    </div>
+                    <p class="text-gray-300 mb-4 font-medium">Smart Server Monitoring & Document Security Platform</p>
+                    <ul class="space-y-2 text-gray-400 mb-6">
+                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Integrated server monitoring, AI-based Intrusion Detection System, and document management</li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Used PyTorch, FastAPI, Vue.js, and RAG architecture</li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Developed secure document classification, user roles, and real-time alerts</li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Initially a startup concept; now being prepared as an open-source platform</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">PyTorch</span>
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">FastAPI</span>
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">Vue.js</span>
+                    </div>
+                </div>
+                
+                <div class="project-card p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-slide-up">
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl mr-3">🧠</span>
+                        <h3 class="text-xl font-semibold text-primary-300">Audio Deepfake Detection</h3>
+                    </div>
+                    <p class="text-gray-400 mb-6">Built a hybrid CNN + LSTM model to detect synthetic voices in audio with advanced preprocessing and time-series analysis.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">CNN</span>
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">LSTM</span>
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">PyTorch</span>
+                    </div>
+                </div>
+                
+                <div class="project-card p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-slide-up">
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl mr-3">🛰️</span>
+                        <h3 class="text-xl font-semibold text-primary-300">Food Traceability Web App</h3>
+                    </div>
+                    <p class="text-gray-400 mb-6">Hackathon finalist project tracking food journey via LOT numbers with AI-generated traceability timeline and smart recommendations.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">Flask</span>
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">Next.js</span>
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">LangChain</span>
+                    </div>
+                </div>
+                
+                <div class="project-card p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 animate-slide-up">
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl mr-3">🎮</span>
+                        <h3 class="text-xl font-semibold text-primary-300">PRISM - Indie Game</h3>
+                    </div>
+                    <p class="text-gray-400 mb-6">Puzzle-platformer focused on portals and gravity challenges with minimal visuals and dynamic level logic built in Unity.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">Unity</span>
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">C#</span>
+                        <span class="skill-pill px-3 py-1 text-xs rounded-full">Game Dev</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider my-16">
+
+        <!-- Skills -->
+        <section id="skills" class="mb-20 animate-fade-in">
+            <h2 class="text-4xl font-bold mb-12 flex items-center">
+                <i class="fas fa-tools mr-4 text-primary-400"></i> 
+                <span class="hero-gradient">Skills</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="animate-slide-up">
+                    <h3 class="text-xl font-semibold mb-6 text-primary-300 flex items-center">
+                        <i class="fas fa-code mr-2"></i>Languages
+                    </h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-pill px-4 py-2 rounded-full">Python</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">JavaScript</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">C#</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">SQL</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">PHP</span>
+                    </div>
+                </div>
+                
+                <div class="animate-slide-up">
+                    <h3 class="text-xl font-semibold mb-6 text-primary-300 flex items-center">
+                        <i class="fas fa-robot mr-2"></i>AI/ML
+                    </h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-pill px-4 py-2 rounded-full">PyTorch</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">TensorFlow</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">OpenCV</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">CNN</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">LSTM</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">LangChain</span>
+                    </div>
+                </div>
+                
+                <div class="animate-slide-up">
+                    <h3 class="text-xl font-semibold mb-6 text-primary-300 flex items-center">
+                        <i class="fas fa-globe mr-2"></i>Web
+                    </h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-pill px-4 py-2 rounded-full">FastAPI</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">Flask</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">Vue.js</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">Supabase</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">ASP.NET</span>
+                    </div>
+                </div>
+                
+                <div class="animate-slide-up">
+                    <h3 class="text-xl font-semibold mb-6 text-primary-300 flex items-center">
+                        <i class="fas fa-wrench mr-2"></i>Tools
+                    </h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-pill px-4 py-2 rounded-full">Git</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">Docker</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">Google Colab</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">VSCode</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">Unity</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider my-16">
+
+        <!-- Activities & Leadership -->
+        <section class="mb-20 animate-fade-in">
+            <h2 class="text-4xl font-bold mb-12 flex items-center">
+                <i class="fas fa-users mr-4 text-primary-400"></i> 
+                <span class="hero-gradient">Activities & Leadership</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-crown text-primary-400 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold text-primary-300">President – I-Tech Club El Tarf</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Led workshops on AI, game dev, and cybersecurity</li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Organized hackathons and university-wide coding events</li>
+                    </ul>
+                </div>
+                
+                <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-chalkboard-teacher text-primary-400 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold text-primary-300">Lecturer & Workshop Facilitator</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Taught Python for Machine Learning to PhD students</li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Delivered cybersecurity sessions for professionals</li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>2 years teaching at Formation Center in El Tarf</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider my-16">
+
+        <!-- Certifications & Contact -->
+        <section id="contact" class="mb-20 animate-fade-in">
+            <h2 class="text-4xl font-bold mb-12 flex items-center">
+                <i class="fas fa-award mr-4 text-primary-400"></i> 
+                <span class="hero-gradient">Certifications & Languages</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-certificate text-primary-400 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold text-primary-300">EF SET English Certificate</h3>
+                    </div>
+                    <p class="text-gray-400 mb-2">C2 Proficient Level (80/100)</p>
+                    <p class="text-primary-300 font-medium">EF SET – Issued June 2024</p>
+                </div>
+                
+                <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-language text-primary-400 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold text-primary-300">Languages</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">Arabic</span>
+                            <span class="text-primary-300 font-medium">Native</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">English</span>
+                            <span class="text-primary-300 font-medium">Fluent</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">French</span>
+                            <span class="text-primary-300 font-medium">Professional</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="glass-card py-12 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-500/10 to-purple-500/10"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="flex justify-center space-x-8 mb-8">
+                <a href="https://linkedin.com/in/your-profile" target="_blank" class="text-gray-400 hover:text-primary-400 transition-all duration-300 transform hover:scale-110">
+                    <i class="fab fa-linkedin text-3xl"></i>
+                </a>
+                <a href="https://github.com/Lok1Tou1l" target="_blank" class="text-gray-400 hover:text-primary-400 transition-all duration-300 transform hover:scale-110">
+                    <i class="fab fa-github text-3xl"></i>
+                </a>
+                <a href="mailto:touillokman14@gmail.com" class="text-gray-400 hover:text-primary-400 transition-all duration-300 transform hover:scale-110">
+                    <i class="fas fa-envelope text-3xl"></i>
+                </a>
+            </div>
+            <p class="text-gray-400 text-lg mb-4">© 2024 Lokman Touil. All rights reserved.</p>
+            <p class="text-gray-500">Built with passion and cutting-edge technology</p>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        const savedTheme = 'dark'; // Force dark theme for better experience
+        html.classList.add(savedTheme);
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        });
+
+        // Scroll Progress Indicator
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('scrollIndicator').style.width = scrolled + '%';
+        });
+
+        // Smooth Scrolling for Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Flip Card Animation
+        const flipCard = document.querySelector('.flip-card');
+        let isFlipped = false;
+        
+        flipCard.addEventListener('click', () => {
+            flipCard.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+        });
+
+        // Auto-flip every 5 seconds
+        setInterval(() => {
+            if (!flipCard.matches(':hover')) {
+                flipCard.classList.toggle('flipped');
+                isFlipped = !isFlipped;
+            }
+        }, 5000);
+
+        // Animated Particles Background
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.animate-fade-in, .animate-slide-up').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Contact Form Handler
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simulate form submission
+            const button = e.target.querySelector('button');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Sending...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.textContent = 'Message Sent!';
+                button.style.backgroundColor = '#10B981';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    button.style.backgroundColor = '';
+                    e.target.reset();
+                }, 2000);
+            }, 1500);
+        });
+
+        // Typing Effect for Hero Section
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
+        }
+
+        // Enhanced Skill Pills Animation
+        document.querySelectorAll('.skill-pill').forEach(pill => {
+            pill.addEventListener('mouseenter', () => {
+                pill.style.transform = 'translateY(-2px) scale(1.05)';
+                pill.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.3)';
+            });
+            
+            pill.addEventListener('mouseleave', () => {
+                pill.style.transform = 'translateY(0) scale(1)';
+                pill.style.boxShadow = 'none';
+            });
+        });
+
+        // Parallax Effect for Hero Section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('#about');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.1}px)`;
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            createStars();
+            
+            // Add stagger animation to project cards
+            const projectCards = document.querySelectorAll('.project-card');
+            projectCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Navigation Active State
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('text-primary-400');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('text-primary-400');
+                }
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+
+        function createStars() {
+            const particlesContainer = document.getElementById('particles');
+            const starCount = 80; // Adjust for more/less stars
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.animationDelay = (Math.random() * 2) + 's';
+                particlesContainer.appendChild(star);
+            }
+        }
+    </script>
+</body>
+</html>

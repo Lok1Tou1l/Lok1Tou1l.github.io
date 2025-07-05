@@ -13,41 +13,63 @@
                 extend: {
                     colors: {
                         dark: {
-                            900: '#0a0a0a',
-                            800: '#1a1a1a',
-                            700: '#2a2a2a',
-                            600: '#3a3a3a',
+                            900: '#0B1426',
+                            800: '#1B2A42',
+                            700: '#243447',
+                            600: '#2D3E52',
                         },
-                        primary: {
-                            400: '#60a5fa',
-                            500: '#3b82f6',
-                            600: '#2563eb',
+                        mystical: {
+                            emerald: '#2DD4BF',
+                            jade: '#10B981',
+                            sapphire: '#3B82F6',
+                            navy: '#1E3A8A',
+                            gold: '#D4AF37',
+                            amber: '#F59E0B',
+                        },
+                        accent: {
+                            gold: '#D4AF37',
+                            bronze: '#CD7F32',
                         }
                     },
                     animation: {
-                        'float': 'float 3s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s ease-in-out infinite',
-                        'fade-in': 'fadeIn 0.5s ease-in-out',
-                        'slide-up': 'slideUp 0.6s ease-out',
-                        'gradient': 'gradient 3s ease infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'gradient': 'gradient 8s ease infinite',
+                        'mystical-glow': 'mysticalGlow 3s ease-in-out infinite',
+                        'card-flip': 'cardFlip 0.8s ease-in-out',
+                        'shimmer': 'shimmer 2s linear infinite',
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-15px) rotate(2deg)' },
                         },
                         fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
                         },
                         slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '0%': { transform: 'translateY(40px)', opacity: '0' },
                             '100%': { transform: 'translateY(0)', opacity: '1' },
                         },
                         gradient: {
                             '0%': { backgroundPosition: '0% 50%' },
                             '50%': { backgroundPosition: '100% 50%' },
                             '100%': { backgroundPosition: '0% 50%' },
+                        },
+                        mysticalGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(45, 212, 191, 0.3)' },
+                            '50%': { boxShadow: '0 0 40px rgba(45, 212, 191, 0.6), 0 0 60px rgba(16, 185, 129, 0.4)' },
+                        },
+                        cardFlip: {
+                            '0%': { transform: 'rotateY(0deg)' },
+                            '100%': { transform: 'rotateY(180deg)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
                         }
                     }
                 }
@@ -55,148 +77,305 @@
         }
     </script>
     <style>
+        body {
+            background: linear-gradient(135deg, #0B1426 0%, #1B2A42 50%, #243447 100%);
+            background-attachment: fixed;
+            color: #D4AF37;
+            min-height: 100vh;
+            font-family: 'Georgia', serif;
+        }
+        
+        .mystical-border {
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #D4AF37, #2DD4BF, #3B82F6, #D4AF37) 1;
+            position: relative;
+        }
+        
+        .mystical-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #D4AF37, #2DD4BF, #3B82F6, #D4AF37);
+            border-radius: inherit;
+            z-index: -1;
+            animation: gradient 8s ease infinite;
+            background-size: 400% 400%;
+        }
+        
         .flip-card {
             perspective: 1000px;
             cursor: pointer;
             transition: transform 0.3s ease;
         }
+        
         .flip-card-inner {
-            transition: transform 0.6s;
+            transition: transform 0.8s;
             transform-style: preserve-3d;
         }
+        
         .flip-card.flipped .flip-card-inner {
             transform: rotateY(180deg);
         }
+        
         .flip-card-front, .flip-card-back {
             backface-visibility: hidden;
             position: absolute;
             width: 100%;
             height: 100%;
+            border-radius: 15px;
         }
+        
         .flip-card-back {
             transform: rotateY(180deg);
         }
+        
         .nav-glass {
-            backdrop-filter: blur(20px);
-            background-color: rgba(26, 26, 26, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(25px);
+            background: rgba(27, 42, 66, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
+        
         .section-divider {
             border: none;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.5), transparent);
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #2DD4BF 30%, #D4AF37 70%, transparent);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .section-divider::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 3s linear infinite;
+        }
+        
         .skill-pill {
-            transition: all 0.3s ease;
-            background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.4s ease;
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.15), rgba(59, 130, 246, 0.15));
+            border: 1px solid rgba(45, 212, 191, 0.4);
+            color: #D4AF37;
+            position: relative;
+            overflow: hidden;
         }
+        
+        .skill-pill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(45, 212, 191, 0.2), transparent);
+            transition: left 0.4s ease;
+        }
+        
+        .skill-pill:hover::before {
+            left: 100%;
+        }
+        
         .skill-pill:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
-            background: linear-gradient(45deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2));
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(45, 212, 191, 0.4);
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.25), rgba(59, 130, 246, 0.25));
+            border-color: #2DD4BF;
         }
+        
         .floating-card {
-            transition: transform 0.3s ease;
+            transition: all 0.4s ease;
+            background: linear-gradient(135deg, rgba(27, 42, 66, 0.9), rgba(36, 52, 71, 0.9));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(45, 212, 191, 0.3);
         }
+        
         .floating-card:hover {
-            transform: translateY(-5px) rotate(1deg);
+            transform: translateY(-8px) rotate(1deg);
+            box-shadow: 0 25px 50px rgba(45, 212, 191, 0.2);
         }
+        
         .project-card {
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(42, 42, 42, 0.8));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            background: linear-gradient(135deg, rgba(27, 42, 66, 0.95), rgba(36, 52, 71, 0.95));
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(45, 212, 191, 0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.4s ease;
+            opacity: 0;
+        }
+        
+        .project-card:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) scale(1.2);
+        }
+        
         .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
-            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(45, 212, 191, 0.3);
+            border-color: #2DD4BF;
         }
+        
         .hero-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #D4AF37 0%, #2DD4BF 30%, #3B82F6 70%, #D4AF37 100%);
             background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
+            animation: gradient 12s ease infinite;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
         }
+        
         .typing-effect {
             overflow: hidden;
-            border-right: 2px solid #3b82f6;
+            border-right: 3px solid #2DD4BF;
             white-space: nowrap;
-            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+            animation: typing 4s steps(40, end), blink-caret 1s step-end infinite;
         }
+        
         @keyframes typing {
             from { width: 0; }
             to { width: 100%; }
         }
+        
         @keyframes blink-caret {
             from, to { border-color: transparent; }
-            50% { border-color: #3b82f6; }
+            50% { border-color: #2DD4BF; }
         }
-        .parallax-bg {
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
+        
         .glass-card {
-            background: rgba(26, 26, 26, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(27, 42, 66, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(45, 212, 191, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
+        
         .progress-bar {
-            height: 4px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-            transition: width 0.3s ease;
-            border-radius: 2px;
+            height: 6px;
+            background: linear-gradient(90deg, #D4AF37, #2DD4BF, #3B82F6);
+            transition: width 0.5s ease;
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
         }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s linear infinite;
+        }
+        
         .scroll-indicator {
             position: fixed;
             top: 0;
             left: 0;
             height: 4px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            background: linear-gradient(90deg, #D4AF37, #2DD4BF, #3B82F6);
             z-index: 100;
-            transition: width 0.1s ease;
+            transition: width 0.2s ease;
         }
+        
         .particle {
             position: absolute;
             pointer-events: none;
-            background: rgba(59, 130, 246, 0.6);
+            background: radial-gradient(circle, rgba(45, 212, 191, 0.8) 0%, transparent 70%);
             border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
+            animation: float 8s ease-in-out infinite;
         }
+        
         .star {
             position: absolute;
             pointer-events: none;
-            background: white;
+            background: #D4AF37;
             border-radius: 50%;
-            opacity: 0.8;
-            box-shadow: 0 0 6px 2px white, 0 0 12px 4px #60a5fa44;
-            animation: twinkle 2s infinite ease-in-out;
+            opacity: 0.9;
+            box-shadow: 0 0 10px 3px #D4AF37, 0 0 20px 6px rgba(45, 212, 191, 0.4);
+            animation: twinkle 3s infinite ease-in-out;
         }
+        
         @keyframes twinkle {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 0.3; }
+            0%, 100% { opacity: 0.9; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
         }
+        
+        .mystical-glow {
+            animation: mystical-glow 4s ease-in-out infinite;
+        }
+        
+        .tarot-frame {
+            border: 4px solid #D4AF37;
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            background: linear-gradient(135deg, rgba(11, 20, 38, 0.95), rgba(27, 42, 66, 0.95));
+            box-shadow: 
+                0 0 30px rgba(212, 175, 55, 0.3),
+                inset 0 0 30px rgba(45, 212, 191, 0.1);
+        }
+        
+        .tarot-frame::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(45, 212, 191, 0.4);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        
+        .mystical-text {
+            color: #D4AF37;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            font-family: 'Georgia', serif;
+        }
+        
+        .emerald-glow {
+            color: #2DD4BF;
+            text-shadow: 0 0 15px rgba(45, 212, 191, 0.7);
+        }
+        
         @media (max-width: 768px) {
             .hero-gradient {
                 font-size: 2rem;
             }
             .typing-effect {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
             }
             .project-card {
-                min-height: 260px;
+                min-height: 280px;
             }
             .flip-card,
             .flip-card-inner {
-                min-height: 340px !important;
+                min-height: 360px !important;
             }
         }
     </style>
+
 </head>
 <body class="bg-dark-900 text-gray-200 min-h-screen font-sans relative overflow-x-hidden">
     <!-- Scroll Progress Indicator -->
@@ -228,11 +407,13 @@
         <!-- Hero Section -->
         <section id="about" class="flex flex-col md:flex-row items-center justify-between gap-12 mb-20 animate-fade-in">
             <div class="md:w-1/2">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-slide-up">
-                    <span class="hero-gradient">Lokman</span> 
-                    <span class="text-primary-400">TOUIL</span>
-                </h1>
-                <h2 class="text-2xl md:text-3xl text-primary-300 mb-8 typing-effect">AI Engineer & Software Developer</h2>
+                <div class="tarot-frame mb-8">
+                    <h1 class="text-5xl md:text-7xl font-bold mystical-text mb-6 animate-slide-up">
+                        <span class="hero-gradient">Lokman</span> 
+                        <span class="emerald-glow">TOUIL</span>
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl emerald-glow mb-8 typing-effect">AI Engineer & Software Developer</h2>
+                </div>
                 
                 <div class="space-y-3 mb-8 animate-slide-up">
                     <p class="flex items-center group">
@@ -303,10 +484,12 @@
 
         <!-- Education -->
         <section id="education" class="mb-20 animate-fade-in">
-            <h2 class="text-4xl font-bold mb-12 flex items-center">
-                <i class="fas fa-graduation-cap mr-4 text-primary-400"></i> 
-                <span class="hero-gradient">Education</span>
-            </h2>
+            <div class="tarot-frame mb-12">
+                <h2 class="text-4xl font-bold mystical-text mb-4 flex items-center">
+                    <i class="fas fa-graduation-cap mr-4 emerald-glow"></i> 
+                    Education
+                </h2>
+            </div>
             
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="project-card p-8 rounded-2xl shadow-xl border-l-4 border-primary-400 animate-slide-up">
@@ -339,10 +522,12 @@
 
         <!-- Projects & Experience -->
         <section id="projects" class="mb-20 animate-fade-in">
-            <h2 class="text-4xl font-bold mb-12 flex items-center">
-                <i class="fas fa-briefcase mr-4 text-primary-400"></i> 
-                <span class="hero-gradient">Projects & Experience</span>
-            </h2>
+            <div class="tarot-frame mb-12">
+                <h2 class="text-4xl font-bold mystical-text mb-4 flex items-center">
+                    <i class="fas fa-briefcase mr-4 emerald-glow"></i> 
+                    Projects & Experience
+                </h2>
+            </div>
             
             <!-- Loki's Project List -->
             <div class="space-y-16">
@@ -464,10 +649,12 @@
 
         <!-- Skills -->
         <section id="skills" class="mb-20 animate-fade-in">
-            <h2 class="text-4xl font-bold mb-12 flex items-center">
-                <i class="fas fa-tools mr-4 text-primary-400"></i> 
-                <span class="hero-gradient">Skills</span>
-            </h2>
+            <div class="tarot-frame mb-12">
+                <h2 class="text-4xl font-bold mystical-text mb-4 flex items-center">
+                    <i class="fas fa-tools mr-4 emerald-glow"></i> 
+                    Skills
+                </h2>
+            </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div class="animate-slide-up">
@@ -529,10 +716,12 @@
 
         <!-- Activities & Leadership -->
         <section class="mb-20 animate-fade-in">
-            <h2 class="text-4xl font-bold mb-12 flex items-center">
-                <i class="fas fa-users mr-4 text-primary-400"></i> 
-                <span class="hero-gradient">Activities & Leadership</span>
-            </h2>
+            <div class="tarot-frame mb-12">
+                <h2 class="text-4xl font-bold mystical-text mb-4 flex items-center">
+                    <i class="fas fa-users mr-4 emerald-glow"></i> 
+                    Activities & Leadership
+                </h2>
+            </div>
             
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
@@ -564,10 +753,12 @@
 
         <!-- Certifications & Contact -->
         <section id="contact" class="mb-20 animate-fade-in">
-            <h2 class="text-4xl font-bold mb-12 flex items-center">
-                <i class="fas fa-award mr-4 text-primary-400"></i> 
-                <span class="hero-gradient">Certifications & Languages</span>
-            </h2>
+            <div class="tarot-frame mb-12">
+                <h2 class="text-4xl font-bold mystical-text mb-4 flex items-center">
+                    <i class="fas fa-award mr-4 emerald-glow"></i> 
+                    Certifications & Languages
+                </h2>
+            </div>
             
             <div class="grid md:grid-cols-2 gap-8 mb-12">
                 <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">

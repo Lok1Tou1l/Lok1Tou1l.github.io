@@ -8,8 +8,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -44,7 +42,6 @@
                         'slide-up': 'slideUp 0.8s ease-out',
                         'gradient': 'gradient 8s ease infinite',
                         'mystical-glow': 'mysticalGlow 3s ease-in-out infinite',
-                        'card-flip': 'cardFlip 0.8s ease-in-out',
                         'shimmer': 'shimmer 2s linear infinite',
                     },
                     keyframes: {
@@ -69,10 +66,6 @@
                             '0%, 100%': { boxShadow: '0 0 20px rgba(45, 212, 191, 0.3)' },
                             '50%': { boxShadow: '0 0 40px rgba(45, 212, 191, 0.6), 0 0 60px rgba(16, 185, 129, 0.4)' },
                         },
-                        cardFlip: {
-                            '0%': { transform: 'rotateY(0deg)' },
-                            '100%': { transform: 'rotateY(180deg)' },
-                        },
                         shimmer: {
                             '0%': { backgroundPosition: '-200% 0' },
                             '100%': { backgroundPosition: '200% 0' },
@@ -83,68 +76,162 @@
         }
     </script>
     <style>
+        /* ── CSS Variables: Dark (default) ── */
+        :root {
+            --bg-base:       linear-gradient(135deg, #0B1426 0%, #1B2A42 50%, #243447 100%);
+            --bg-card:       linear-gradient(135deg, rgba(27,42,66,0.95), rgba(36,52,71,0.95));
+            --bg-glass:      rgba(27,42,66,0.8);
+            --bg-nav:        rgba(27,42,66,0.85);
+            --bg-tarot:      linear-gradient(135deg, rgba(11,20,38,0.95), rgba(27,42,66,0.95));
+            --color-text:    #D4AF37;
+            --color-muted:   #9ca3af;
+            --color-subtle:  #c8bfa8;
+            --border-card:   rgba(212,175,55,0.25);
+            --border-nav:    rgba(212,175,55,0.3);
+            --border-tarot:  rgba(212,175,55,0.7);
+            --border-inner:  rgba(45,212,191,0.3);
+            --shadow-nav:    0 8px 32px rgba(0,0,0,0.4);
+            --icon-bg:       rgba(45,212,191,0.12);
+            --icon-border:   rgba(45,212,191,0.35);
+            --toggle-bg:     transparent;
+            --toggle-border: #4b5563;
+            --toggle-color:  #9ca3af;
+        }
+
+        /* ── CSS Variables: Light mode ── */
+        html:not(.dark) {
+            --bg-base:       linear-gradient(135deg, #e8f4f8 0%, #d4e9f7 50%, #c9e0f0 100%);
+            --bg-card:       linear-gradient(135deg, rgba(255,255,255,0.97), rgba(240,248,255,0.97));
+            --bg-glass:      rgba(255,255,255,0.85);
+            --bg-nav:        rgba(255,255,255,0.88);
+            --bg-tarot:      linear-gradient(135deg, rgba(230,244,252,0.98), rgba(210,235,250,0.98));
+            --color-text:    #1a365d;
+            --color-muted:   #4a5568;
+            --color-subtle:  #2d4a6e;
+            --border-card:   rgba(26,54,93,0.2);
+            --border-nav:    rgba(26,54,93,0.25);
+            --border-tarot:  rgba(26,54,93,0.5);
+            --border-inner:  rgba(13,148,136,0.3);
+            --shadow-nav:    0 8px 32px rgba(0,0,0,0.12);
+            --icon-bg:       rgba(13,148,136,0.1);
+            --icon-border:   rgba(13,148,136,0.3);
+            --toggle-bg:     transparent;
+            --toggle-border: #cbd5e0;
+            --toggle-color:  #4a5568;
+        }
+
+        /* Light mode overrides for hardcoded colours */
+        html:not(.dark) .nav-link        { color: var(--color-subtle); }
+        html:not(.dark) .nav-link:hover,
+        html:not(.dark) .nav-link.active { color: #0d9488; }
+        html:not(.dark) .nav-link::after { background: linear-gradient(90deg, #1a365d, #0d9488); }
+        html:not(.dark) .mystical-text   { color: #1a365d; text-shadow: none; }
+        html:not(.dark) .emerald-glow    { color: #0d9488; text-shadow: none; }
+        html:not(.dark) .hero-gradient   {
+            background: linear-gradient(135deg, #1a365d 0%, #0d9488 40%, #2563eb 100%);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        html:not(.dark) .typing-effect   { border-right-color: #0d9488; color: #0d9488; }
+        html:not(.dark) .skill-pill      { color: #1a365d; border-color: rgba(13,148,136,0.4); background: linear-gradient(135deg,rgba(13,148,136,0.08),rgba(37,99,235,0.08)); }
+        html:not(.dark) .tech-chip       { color: #0d6e65; background: rgba(13,148,136,0.07); border-color: rgba(13,148,136,0.25); }
+        html:not(.dark) .section-divider { background: linear-gradient(90deg, transparent, #0d9488 30%, #1a365d 70%, transparent); }
+        html:not(.dark) .glass-card      { background: rgba(255,255,255,0.85); border-color: rgba(13,148,136,0.3); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+        html:not(.dark) .live-badge      { background: rgba(5,150,105,0.1); border-color: rgba(5,150,105,0.4); color: #047857; }
+        html:not(.dark) .live-badge::before { background: #047857; }
+        html:not(.dark) .project-link-btn { color: #0d9488; border-color: rgba(13,148,136,0.4); background: rgba(13,148,136,0.06); }
+        html:not(.dark) .project-link-btn:hover { background: rgba(13,148,136,0.14); border-color: #0d9488; }
+        html:not(.dark) .section-icon-wrap { background: rgba(13,148,136,0.1); border-color: rgba(13,148,136,0.3); }
+        html:not(.dark) .progress-bar    { background: linear-gradient(90deg, #1a365d, #0d9488, #2563eb); }
+        html:not(.dark) .cat-web  { background:rgba(37,99,235,0.08);  border-color:rgba(37,99,235,0.3);  color:#1d4ed8; }
+        html:not(.dark) .cat-ai   { background:rgba(109,40,217,0.08); border-color:rgba(109,40,217,0.3); color:#6d28d9; }
+        html:not(.dark) .cat-game { background:rgba(180,130,0,0.08);  border-color:rgba(180,130,0,0.3);  color:#92640a; }
+        html:not(.dark) .cat-iot  { background:rgba(194,65,12,0.08);  border-color:rgba(194,65,12,0.3);  color:#c2410c; }
+        html:not(.dark) .cat-edu  { background:rgba(5,150,105,0.08);  border-color:rgba(5,150,105,0.3);  color:#047857; }
+        html:not(.dark) .cat-security { background:rgba(185,28,28,0.08); border-color:rgba(185,28,28,0.3); color:#b91c1c; }
+        html:not(.dark) .star { background:#D4AF37; box-shadow: 0 0 6px 2px rgba(180,130,0,0.4); }
+        html:not(.dark) .particle { background: radial-gradient(circle, rgba(13,148,136,0.5) 0%, transparent 70%); }
+        html:not(.dark) .floating-card  { background: linear-gradient(135deg,rgba(255,255,255,0.9),rgba(240,248,255,0.9)); border-color: rgba(13,148,136,0.3); }
+        html:not(.dark) footer           { background: rgba(255,255,255,0.75); border-color: rgba(13,148,136,0.2); }
+        html:not(.dark) .text-gray-300   { color: #374151 !important; }
+        html:not(.dark) .text-gray-400   { color: #4b5563 !important; }
+        html:not(.dark) .text-gray-600   { color: #6b7280 !important; }
+        html:not(.dark) .text-gray-200   { color: #1f2937 !important; }
+        html:not(.dark) .text-mystical-emerald { color: #0d9488 !important; }
+        html:not(.dark) .text-accent-gold { color: #92640a !important; }
+        html:not(.dark) footer .text-gray-400 { color: #4b5563 !important; }
+        html:not(.dark) footer .text-gray-600 { color: #6b7280 !important; }
+        html:not(.dark) .bg-gray-700  { background-color: #cbd5e0 !important; }
+
         body {
-            background: linear-gradient(135deg, #0B1426 0%, #1B2A42 50%, #243447 100%);
+            background: var(--bg-base);
             background-attachment: fixed;
-            color: #D4AF37;
+            color: var(--color-text);
             min-height: 100vh;
             font-family: 'Georgia', serif;
+            transition: background 0.4s ease, color 0.4s ease;
         }
-        
-        .mystical-border {
-            border: 2px solid;
-            border-image: linear-gradient(45deg, #D4AF37, #2DD4BF, #3B82F6, #D4AF37) 1;
-            position: relative;
+
+        /* ── Scroll Progress ── */
+        .scroll-indicator {
+            position: fixed;
+            top: 0; left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #D4AF37, #2DD4BF, #3B82F6);
+            z-index: 200;
+            transition: width 0.2s ease;
         }
-        
-        .mystical-border::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #D4AF37, #2DD4BF, #3B82F6, #D4AF37);
-            border-radius: inherit;
-            z-index: -1;
-            animation: gradient 8s ease infinite;
-            background-size: 400% 400%;
-        }
-        
-        .flip-card {
-            perspective: 1000px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        
-        .flip-card-inner {
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-        }
-        
-        .flip-card.flipped .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-        
-        .flip-card-front, .flip-card-back {
-            backface-visibility: hidden;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-        }
-        
-        .flip-card-back {
-            transform: rotateY(180deg);
-        }
-        
+
+        /* ── Navigation ── */
         .nav-glass {
             backdrop-filter: blur(25px);
-            background: rgba(27, 42, 66, 0.8);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            background: var(--bg-nav);
+            border: 1px solid var(--border-nav);
+            box-shadow: var(--shadow-nav);
+            transition: background 0.4s ease, border-color 0.4s ease;
         }
-        
+        .nav-link {
+            position: relative;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+            color: #c8bfa8;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, #D4AF37, #2DD4BF);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover { color: #2DD4BF; }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link.active { color: #2DD4BF; }
+
+        /* ── Tarot Frame ── */
+        .tarot-frame {
+            border: 3px solid var(--border-tarot);
+            border-radius: 18px;
+            padding: 24px 28px;
+            position: relative;
+            background: var(--bg-tarot);
+            box-shadow: 0 0 30px rgba(212,175,55,0.1), inset 0 0 30px rgba(45,212,191,0.04);
+            transition: background 0.4s ease, border-color 0.4s ease;
+        }
+        .tarot-frame::before {
+            content: '';
+            position: absolute;
+            top: 8px; left: 8px; right: 8px; bottom: 8px;
+            border: 1px solid var(--border-inner);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        /* ── Section Divider ── */
         .section-divider {
             border: none;
             height: 3px;
@@ -152,128 +239,145 @@
             position: relative;
             overflow: hidden;
         }
-        
         .section-divider::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
             animation: shimmer 3s linear infinite;
         }
-        
-        .skill-pill {
-            transition: all 0.4s ease;
-            background: linear-gradient(135deg, rgba(45, 212, 191, 0.15), rgba(59, 130, 246, 0.15));
-            border: 1px solid rgba(45, 212, 191, 0.4);
-            color: #D4AF37;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .skill-pill::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(45, 212, 191, 0.2), transparent);
-            transition: left 0.4s ease;
-        }
-        
-        .skill-pill:hover::before {
-            left: 100%;
-        }
-        
-        .skill-pill:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(45, 212, 191, 0.4);
-            background: linear-gradient(135deg, rgba(45, 212, 191, 0.25), rgba(59, 130, 246, 0.25));
-            border-color: #2DD4BF;
-        }
-        
-        .floating-card {
-            transition: all 0.4s ease;
-            background: linear-gradient(135deg, rgba(27, 42, 66, 0.9), rgba(36, 52, 71, 0.9));
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(45, 212, 191, 0.3);
-        }
-        
-        .floating-card:hover {
-            transform: translateY(-8px) rotate(1deg);
-            box-shadow: 0 25px 50px rgba(45, 212, 191, 0.2);
-        }
-        
+
+        /* ── Cards ── */
         .project-card {
             transition: all 0.4s ease;
-            background: linear-gradient(135deg, rgba(27, 42, 66, 0.95), rgba(36, 52, 71, 0.95));
-            border: 2px solid rgba(212, 175, 55, 0.3);
+            background: var(--bg-card);
+            border: 2px solid var(--border-card);
             backdrop-filter: blur(20px);
             position: relative;
             overflow: hidden;
         }
-        
         .project-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(45, 212, 191, 0.1) 0%, transparent 70%);
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(45,212,191,0.08) 0%, transparent 70%);
             transform: rotate(45deg);
             transition: all 0.4s ease;
             opacity: 0;
         }
-        
-        .project-card:hover::before {
-            opacity: 1;
-            transform: rotate(45deg) scale(1.2);
-        }
-        
+        .project-card:hover::before { opacity: 1; transform: rotate(45deg) scale(1.2); }
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(45, 212, 191, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(45,212,191,0.25);
+            border-color: rgba(45,212,191,0.6);
+        }
+
+        /* ── NEW: Live project badge ── */
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            color: #10B981;
+            font-size: 0.75rem;
+            font-family: 'Georgia', serif;
+            letter-spacing: 0.05em;
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+        .live-badge::before {
+            content: '';
+            width: 7px; height: 7px;
+            background: #10B981;
+            border-radius: 50%;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        /* ── NEW: Category badge ── */
+        .cat-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-family: 'Georgia', serif;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 2px 9px;
+            border-radius: 999px;
+            border: 1px solid;
+        }
+        .cat-web { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.4); color: #93C5FD; }
+        .cat-ai { background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.4); color: #C4B5FD; }
+        .cat-game { background: rgba(251,191,36,0.12); border-color: rgba(251,191,36,0.4); color: #FDE68A; }
+        .cat-iot { background: rgba(251,146,60,0.12); border-color: rgba(251,146,60,0.4); color: #FED7AA; }
+        .cat-edu { background: rgba(45,212,191,0.12); border-color: rgba(45,212,191,0.4); color: #99F6E4; }
+        .cat-security { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.4); color: #FCA5A5; }
+
+        /* ── Tech stack chips ── */
+        .tech-chip {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-family: monospace;
+            letter-spacing: 0.03em;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(45,212,191,0.08);
+            border: 1px solid rgba(45,212,191,0.25);
+            color: #7ED8D0;
+        }
+
+        /* ── Skill Pills ── */
+        .skill-pill {
+            transition: all 0.4s ease;
+            background: linear-gradient(135deg, rgba(45,212,191,0.12), rgba(59,130,246,0.12));
+            border: 1px solid rgba(45,212,191,0.35);
+            color: #D4AF37;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.85rem;
+        }
+        .skill-pill::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(45,212,191,0.18), transparent);
+            transition: left 0.4s ease;
+        }
+        .skill-pill:hover::before { left: 100%; }
+        .skill-pill:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 24px rgba(45,212,191,0.35);
             border-color: #2DD4BF;
         }
-        
-        .hero-gradient {
-            background: linear-gradient(135deg, #D4AF37 0%, #2DD4BF 30%, #3B82F6 70%, #D4AF37 100%);
-            background-size: 400% 400%;
-            animation: gradient 12s ease infinite;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+
+        /* ── Flip card ── */
+        .flip-card { perspective: 1000px; cursor: pointer; }
+        .flip-card-inner { transition: transform 0.8s; transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 16px;
         }
-        
-        .typing-effect {
-            overflow: hidden;
-            border-right: 3px solid #2DD4BF;
-            white-space: nowrap;
-            animation: typing 4s steps(40, end), blink-caret 1s step-end infinite;
-        }
-        
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: #2DD4BF; }
-        }
-        
+        .flip-card-back { transform: rotateY(180deg); }
+
+        /* ── Glass ── */
         .glass-card {
-            background: rgba(27, 42, 66, 0.8);
+            background: var(--bg-glass);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(45, 212, 191, 0.4);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(45,212,191,0.35);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            transition: background 0.4s ease;
         }
-        
+
+        /* ── Progress bar ── */
         .progress-bar {
             height: 6px;
             background: linear-gradient(90deg, #D4AF37, #2DD4BF, #3B82F6);
@@ -282,127 +386,132 @@
             position: relative;
             overflow: hidden;
         }
-        
         .progress-bar::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
             animation: shimmer 2s linear infinite;
         }
-        
-        .scroll-indicator {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #D4AF37, #2DD4BF, #3B82F6);
-            z-index: 100;
-            transition: width 0.2s ease;
+
+        /* ── Typography ── */
+        .hero-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #2DD4BF 30%, #3B82F6 70%, #D4AF37 100%);
+            background-size: 400% 400%;
+            animation: gradient 12s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        
+        .mystical-text { color: #D4AF37; text-shadow: 0 0 10px rgba(212,175,55,0.4); font-family: 'Georgia', serif; }
+        .emerald-glow { color: #2DD4BF; text-shadow: 0 0 14px rgba(45,212,191,0.6); }
+
+        /* ── Typing caret ── */
+        .typing-effect {
+            overflow: hidden;
+            border-right: 3px solid #2DD4BF;
+            white-space: nowrap;
+            animation: typing 3.5s steps(38, end) forwards, blink-caret 1s step-end infinite;
+        }
+        @keyframes typing { from { width: 0; } to { width: 100%; } }
+        @keyframes blink-caret { from, to { border-color: transparent; } 50% { border-color: #2DD4BF; } }
+
+        /* ── Particles / Stars ── */
         .particle {
             position: absolute;
             pointer-events: none;
-            background: radial-gradient(circle, rgba(45, 212, 191, 0.8) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(45,212,191,0.7) 0%, transparent 70%);
             border-radius: 50%;
             animation: float 8s ease-in-out infinite;
         }
-        
         .star {
             position: absolute;
             pointer-events: none;
             background: #D4AF37;
             border-radius: 50%;
-            opacity: 0.9;
-            box-shadow: 0 0 10px 3px #D4AF37, 0 0 20px 6px rgba(45, 212, 191, 0.4);
+            opacity: 0.85;
+            box-shadow: 0 0 8px 2px #D4AF37, 0 0 16px 4px rgba(45,212,191,0.3);
             animation: twinkle 3s infinite ease-in-out;
         }
-        
         @keyframes twinkle {
-            0%, 100% { opacity: 0.9; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(1.2); }
+            0%, 100% { opacity: 0.85; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(1.3); }
         }
-        
-        .mystical-glow {
-            animation: mystical-glow 4s ease-in-out infinite;
-        }
-        
-        .tarot-frame {
-            border: 4px solid #D4AF37;
-            border-radius: 20px;
-            padding: 20px;
-            position: relative;
-            background: linear-gradient(135deg, rgba(11, 20, 38, 0.95), rgba(27, 42, 66, 0.95));
-            box-shadow: 
-                0 0 30px rgba(212, 175, 55, 0.3),
-                inset 0 0 30px rgba(45, 212, 191, 0.1);
-        }
-        
-        .tarot-frame::before {
-            content: '';
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border: 1px solid rgba(45, 212, 191, 0.4);
+
+        /* ── Section header icon ── */
+        .section-icon-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px; height: 48px;
             border-radius: 12px;
-            pointer-events: none;
+            background: var(--icon-bg);
+            border: 1px solid var(--icon-border);
+            margin-right: 16px;
+            flex-shrink: 0;
+            transition: background 0.4s ease;
         }
-        
-        .mystical-text {
-            color: #D4AF37;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+
+        /* ── Floating card animation ── */
+        .floating-card {
+            transition: all 0.4s ease;
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(45,212,191,0.3);
+        }
+        .floating-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(45,212,191,0.18); }
+
+        /* ── Link button ── */
+        .project-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            padding: 5px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(45,212,191,0.45);
+            color: #2DD4BF;
+            background: rgba(45,212,191,0.08);
+            text-decoration: none;
+            transition: all 0.3s ease;
             font-family: 'Georgia', serif;
         }
-        
-        .emerald-glow {
-            color: #2DD4BF;
-            text-shadow: 0 0 15px rgba(45, 212, 191, 0.7);
+        .project-link-btn:hover {
+            background: rgba(45,212,191,0.18);
+            border-color: #2DD4BF;
+            box-shadow: 0 4px 16px rgba(45,212,191,0.25);
+            transform: translateY(-1px);
         }
-        
+
+        /* ── Responsive ── */
         @media (max-width: 768px) {
-            .hero-gradient {
-                font-size: 2rem;
-            }
-            .typing-effect {
-                font-size: 1.2rem;
-            }
-            .project-card {
-                min-height: 280px;
-            }
-            .flip-card,
-            .flip-card-inner {
-                min-height: 360px !important;
-            }
+            .hero-gradient { font-size: 2rem; }
+            .typing-effect { font-size: 1.1rem; }
+            .flip-card, .flip-card-inner { min-height: 340px !important; }
         }
     </style>
-
 </head>
-<body class="bg-dark-900 text-gray-200 min-h-screen font-sans relative overflow-x-hidden">
-    <!-- Scroll Progress Indicator -->
+
+<body class="bg-dark-900 text-gray-200 min-height-screen font-sans relative overflow-x-hidden">
+
+    <!-- Scroll Progress -->
     <div class="scroll-indicator" id="scrollIndicator"></div>
-    
-    <!-- Animated Background Particles -->
+
+    <!-- Background Particles -->
     <div class="fixed inset-0 pointer-events-none z-0" id="particles"></div>
-    
+
     <!-- Navigation -->
-    <nav class="nav-glass fixed top-0 left-1/2 transform -translate-x-1/2 z-50 mt-6 rounded-full px-8 py-3 shadow-2xl w-[95vw] max-w-3xl">
+    <nav class="nav-glass fixed top-0 left-1/2 transform -translate-x-1/2 z-50 mt-5 rounded-full px-8 py-3 w-[95vw] max-w-3xl">
         <div class="flex items-center justify-between">
-            <!-- Desktop Nav Links -->
-            <div class="flex space-x-8 nav-links-desktop">
-                <a href="#about" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">About</a>
-                <a href="#education" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Education</a>
-                <a href="#projects" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Projects</a>
-                <a href="#skills" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Skills</a>
-                <a href="#contact" class="nav-link text-gray-300 hover:text-primary-400 transition-all duration-300 relative">Contact</a>
+            <div class="flex space-x-6">
+                <a href="#about"     class="nav-link">About</a>
+                <a href="#education" class="nav-link">Education</a>
+                <a href="#projects"  class="nav-link">Projects</a>
+                <a href="#skills"    class="nav-link">Skills</a>
+                <a href="#contact"   class="nav-link">Contact</a>
             </div>
-            <!-- Theme Toggle Button -->
-            <button id="theme-toggle" class="bg-primary-500 text-white p-2 rounded-full hover:bg-primary-600 transition-all duration-300 shadow-lg">
+            <button id="theme-toggle" style="color:var(--toggle-color);border:1px solid var(--toggle-border);background:var(--toggle-bg);" class="transition-all duration-300 p-2 rounded-full text-sm w-9 h-9 flex items-center justify-center hover:border-mystical-emerald hover:text-mystical-emerald">
                 <i class="fas fa-moon"></i>
             </button>
         </div>
@@ -410,82 +519,71 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 pt-32 pb-20 relative z-10">
-        <!-- Hero Section -->
+
+        <!-- ═══ HERO ═══ -->
         <section id="about" class="flex flex-col md:flex-row items-center justify-between gap-12 mb-20 animate-fade-in">
             <div class="md:w-1/2">
                 <div class="tarot-frame mb-8">
-                    <h1 class="text-5xl md:text-7xl font-bold mystical-text mb-6 animate-slide-up">
-                        <span class="hero-gradient">Lokman</span> 
-                        <span class="emerald-glow">TOUIL</span>
+                    <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">
+                        <span class="hero-gradient">Lokman</span>
+                        <span class="emerald-glow"> TOUIL</span>
                     </h1>
-                    <h2 class="text-2xl md:text-3xl emerald-glow mb-8 typing-effect">AI Engineer & Game Developer</h2>
+                    <h2 class="text-xl md:text-2xl emerald-glow typing-effect">AI Engineer &amp; Game Developer</h2>
                 </div>
-                
-                <div class="space-y-3 mb-8 animate-slide-up">
-                    <p class="flex items-center group">
-                        <i class="fas fa-map-marker-alt mr-3 text-primary-400 group-hover:scale-110 transition-transform"></i> 
-                        <span class="group-hover:text-primary-300 transition-colors">El Tarf, Algeria</span>
+
+                <div class="space-y-3 mb-8">
+                    <p class="flex items-center gap-3 text-gray-300 text-sm">
+                        <i class="fas fa-map-marker-alt text-mystical-emerald w-4 text-center"></i>El Tarf, Algeria
                     </p>
-                    <p class="flex items-center group">
-                        <i class="fas fa-phone mr-3 text-primary-400 group-hover:scale-110 transition-transform"></i> 
-                        <span class="group-hover:text-primary-300 transition-colors">+213 799126826</span>
+                    <p class="flex items-center gap-3 text-gray-300 text-sm">
+                        <i class="fas fa-phone text-mystical-emerald w-4 text-center"></i>+213 799 126 826
                     </p>
-                    <p class="flex items-center group">
-                        <i class="fas fa-envelope mr-3 text-primary-400 group-hover:scale-110 transition-transform"></i> 
-                        <span class="group-hover:text-primary-300 transition-colors">lokmantouil.dev@gmail.com</span>
+                    <p class="flex items-center gap-3 text-gray-300 text-sm">
+                        <i class="fas fa-envelope text-mystical-emerald w-4 text-center"></i>lokmantouil.dev@gmail.com
                     </p>
-                    <p class="flex items-center group">
-                        <i class="fab fa-linkedin mr-3 text-primary-400 group-hover:scale-110 transition-transform"></i> 
-                        <a href="https://www.linkedin.com/in/lokman-touil-50ab90261/" target="_blank" class="hover:text-primary-300 transition-colors">Lokman Touil</a>
+                    <p class="flex items-center gap-3 text-sm">
+                        <i class="fab fa-linkedin text-mystical-emerald w-4 text-center"></i>
+                        <a href="https://www.linkedin.com/in/lokman-touil-50ab90261/" target="_blank" class="text-gray-300 hover:text-mystical-emerald transition-colors">linkedin.com/in/lokman-touil</a>
                     </p>
-                    <p class="flex items-center group">
-                        <i class="fab fa-github mr-3 text-primary-400 group-hover:scale-110 transition-transform"></i> 
-                        <a href="https://github.com/Lok1Tou1l" target="_blank" class="hover:text-primary-300 transition-colors">Lok1Tou1l</a>
+                    <p class="flex items-center gap-3 text-sm">
+                        <i class="fab fa-github text-mystical-emerald w-4 text-center"></i>
+                        <a href="https://github.com/Lok1Tou1l" target="_blank" class="text-gray-300 hover:text-mystical-emerald transition-colors">github.com/Lok1Tou1l</a>
                     </p>
                 </div>
 
-                <p class="text-gray-300 mb-8 leading-relaxed text-lg animate-slide-up">
-                    GAME DEV @ PHILIGRAM || Teacher @ University Chadli Benjedid El Tarf (UCBET)<br>
-
-                    AI Engineer & Software Developer with a Master's in Artificial Intelligence. Strong background in machine learning, 
-                    full-stack development, and telecom systems. Experienced in building smart platforms (e.g., SecureDoc), 
-                    procedural game systems, and AI-enhanced web apps. Passionate about applying AI in real-world domains like 
-                    security, education, and infrastructure.
-
-                    Also a passionate game developer , intrested in merging AI with various aspects of games 
-                    also worked on AR / XR / VR projects 
+                <p class="text-gray-300 mb-8 leading-relaxed text-base">
+                    <span class="text-mystical-emerald font-semibold">Game Dev @ PHILIGRAM</span> &nbsp;|&nbsp;
+                    <span class="text-mystical-emerald font-semibold">Teacher @ UCBET</span><br><br>
+                    AI Engineer &amp; Software Developer with a Master's in Artificial Intelligence. Strong background in machine learning,
+                    full-stack development, and telecom systems. Passionate about applying AI in real-world domains like
+                    security, education, and infrastructure. Also an avid game developer exploring AI, AR/VR/XR, and
+                    procedural systems.
                 </p>
 
-                <div class="flex space-x-4 animate-slide-up">
-                    <a href="#contact" class="bg-primary-500 hover:bg-primary-600 text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <div class="flex flex-wrap gap-3">
+                    <a href="#contact" class="bg-gradient-to-r from-mystical-emerald to-mystical-sapphire text-dark-900 font-semibold px-7 py-3 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg text-sm">
                         Get In Touch
                     </a>
-                    <a href="#projects" class="border-2 border-primary-400 text-primary-400 hover:bg-primary-400 hover:text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
+                    <a href="#projects" class="border-2 border-mystical-emerald text-mystical-emerald hover:bg-mystical-emerald hover:text-dark-900 px-7 py-3 rounded-full transition-all duration-300 hover:scale-105 text-sm font-semibold">
                         View Projects
                     </a>
                 </div>
             </div>
 
-            <!-- Enhanced Flip Card -->
-            <div id="floating-card" class="floating-card flip-card w-full max-w-xs sm:max-w-sm md:w-96 md:h-[600px] h-72 sm:h-96 relative animate-float mx-auto">
+            <!-- Flip Card -->
+            <div id="floating-card" class="floating-card flip-card w-full max-w-xs sm:max-w-sm md:w-80 md:h-[520px] h-64 sm:h-80 relative animate-float mx-auto">
                 <div class="flip-card-inner w-full h-full">
                     <div class="flip-card-front glass-card rounded-2xl shadow-2xl overflow-hidden">
-                        <img src="assets/lokman.jpg" 
-                             alt="Developer working" 
-                             class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-6">
-                            <h3 class="text-2xl font-bold mb-2">Lokman Touil</h3>
-                            <p class="text-primary-300 font-medium">AI Engineer & Developer</p>
+                        <img src="assets/lokman.jpg" alt="Lokman Touil" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-5">
+                            <h3 class="text-xl font-bold mystical-text">Lokman Touil</h3>
+                            <p class="text-mystical-emerald text-sm">AI Engineer &amp; Developer</p>
                         </div>
                     </div>
                     <div class="flip-card-back glass-card rounded-2xl shadow-2xl overflow-hidden">
-                        <img src="assets/front_arcana.png" 
-                             alt="Developer working" 
-                             class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-6">
-                        </div>
+                        <img src="assets/front_arcana.png" alt="Arcana" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent"></div>
                     </div>
                 </div>
             </div>
@@ -493,36 +591,34 @@
 
         <hr class="section-divider my-16">
 
-        <!-- Education -->
+        <!-- ═══ EDUCATION ═══ -->
         <section id="education" class="mb-20 animate-fade-in">
-            <div class="tarot-frame mb-12">
-                <h2 class="text-4xl font-bold mystical-text mb-4 flex items-center">
-                    <i class="fas fa-graduation-cap mr-4 emerald-glow"></i> 
+            <div class="tarot-frame mb-10">
+                <h2 class="text-3xl font-bold mystical-text flex items-center">
+                    <span class="section-icon-wrap"><i class="fas fa-graduation-cap emerald-glow text-xl"></i></span>
                     Education
                 </h2>
             </div>
-            
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="project-card p-8 rounded-2xl shadow-xl border-l-4 border-primary-400 animate-slide-up">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-brain text-primary-400 text-2xl mr-3"></i>
-                        <h3 class="text-xl font-semibold">Master's in Artificial Intelligence</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                    <div class="flex items-center mb-3 gap-3">
+                        <i class="fas fa-brain text-mystical-emerald text-xl"></i>
+                        <h3 class="text-lg font-semibold">Master's in Artificial Intelligence</h3>
                     </div>
-                    <p class="text-gray-400 mb-2">University of Chadli Bendjedid, El Tarf, Algeria</p>
-                    <p class="text-primary-300 font-medium">2023 – 2025</p>
-                    <div class="mt-4 w-full bg-gray-700 rounded-full h-2">
+                    <p class="text-gray-400 text-sm mb-1">University of Chadli Bendjedid, El Tarf, Algeria</p>
+                    <p class="text-mystical-emerald text-sm font-medium mb-4">2023 – 2025</p>
+                    <div class="w-full bg-gray-700 rounded-full h-1.5">
                         <div class="progress-bar w-4/5 rounded-full"></div>
                     </div>
                 </div>
-                
-                <div class="project-card p-8 rounded-2xl shadow-xl border-l-4 border-primary-400 animate-slide-up">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-laptop-code text-primary-400 text-2xl mr-3"></i>
-                        <h3 class="text-xl font-semibold">Bachelor's in Computer Science</h3>
+                <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                    <div class="flex items-center mb-3 gap-3">
+                        <i class="fas fa-laptop-code text-mystical-emerald text-xl"></i>
+                        <h3 class="text-lg font-semibold">Bachelor's in Computer Science</h3>
                     </div>
-                    <p class="text-gray-400 mb-2">University of Chadli Bendjedid, El Tarf, Algeria</p>
-                    <p class="text-primary-300 font-medium">2020 – 2023</p>
-                    <div class="mt-4 w-full bg-gray-700 rounded-full h-2">
+                    <p class="text-gray-400 text-sm mb-1">University of Chadli Bendjedid, El Tarf, Algeria</p>
+                    <p class="text-mystical-emerald text-sm font-medium mb-4">2020 – 2023</p>
+                    <div class="w-full bg-gray-700 rounded-full h-1.5">
                         <div class="progress-bar w-full rounded-full"></div>
                     </div>
                 </div>
@@ -531,148 +627,282 @@
 
         <hr class="section-divider my-16">
 
-        <!-- Projects & Experience -->
+        <!-- ═══ PROJECTS ═══ -->
         <section id="projects" class="mb-20 animate-fade-in">
-            <div class="tarot-frame mb-12">
-                <h2 class="text-4xl font-bold mystical-text mb-4 flex items-center">
-                    <i class="fas fa-briefcase mr-4 emerald-glow"></i> 
-                    Projects & Experience
+            <div class="tarot-frame mb-10">
+                <h2 class="text-3xl font-bold mystical-text flex items-center">
+                    <span class="section-icon-wrap"><i class="fas fa-briefcase emerald-glow text-xl"></i></span>
+                    Projects &amp; Experience
                 </h2>
             </div>
-            
-            <!-- Loki's Project List -->
-            <div class="space-y-16">
-                <!-- Academic & Thesis Projects -->
+
+            <div class="space-y-14">
+
+                <!-- Academic -->
                 <div>
-                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🎓</span>Academic & Thesis Projects</h3>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">SecureDoc – Graduation Thesis</h4>
-                            <p class="text-gray-300 mb-2">End-to-end platform for secure document management and server monitoring. Integrated Intrusion Detection System (IDS) for real-time threat detection.</p>
-                            <p class="text-gray-400 mb-2">Stack: Flask (API), React, Scikit-learn, Kaggle (Cloud training)</p>
+                    <h3 class="text-xl font-bold mb-5 flex items-center gap-2 text-gray-200">
+                        <span>🎓</span> Academic &amp; Thesis Projects
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">SecureDoc – Graduation Thesis</h4>
+                                <span class="cat-badge cat-security ml-2 flex-shrink-0">Security</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">End-to-end platform for secure document management and server monitoring. Integrated Intrusion Detection System (IDS) for real-time threat detection.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">Flask</span><span class="tech-chip">React</span><span class="tech-chip">Scikit-learn</span><span class="tech-chip">Kaggle</span>
+                            </div>
                         </div>
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Intrusion Detection System using AI & Deep Learning</h4>
-                            <p class="text-gray-300 mb-2">AI-based model to detect various cyberattack patterns. Used deep learning architectures for anomaly detection.</p>
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Intrusion Detection System (IDS)</h4>
+                                <span class="cat-badge cat-ai ml-2 flex-shrink-0">AI/ML</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">AI-based model to detect various cyberattack patterns using deep learning architectures for anomaly detection.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">Deep Learning</span><span class="tech-chip">Python</span>
+                            </div>
                         </div>
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">360° Virtual Tour of the University</h4>
-                            <p class="text-gray-300 mb-2">Interactive web experience built with Panolens.js. Helps new students and visitors explore the university remotely.</p>
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">360° Virtual University Tour</h4>
+                                <span class="cat-badge cat-web ml-2 flex-shrink-0">Web / XR</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">Interactive web experience built with Panolens.js. Helps new students and visitors explore the university remotely.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">Panolens.js</span><span class="tech-chip">JavaScript</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- AI & Machine Learning Projects -->
+
+                <!-- AI & ML -->
                 <div>
-                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🧠</span>AI & Machine Learning Projects</h3>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Audio Deepfake Detection</h4>
-                            <p class="text-gray-300 mb-2">Developed a CNN + LSTM hybrid model to detect synthetic audio. Presented as part of academic research on media authentication.</p>
+                    <h3 class="text-xl font-bold mb-5 flex items-center gap-2 text-gray-200">
+                        <span>🧠</span> AI &amp; Machine Learning Projects
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Audio Deepfake Detection</h4>
+                                <span class="cat-badge cat-ai ml-2 flex-shrink-0">AI/ML</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">CNN + LSTM hybrid model to detect synthetic audio. Presented as academic research on media authentication.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">CNN</span><span class="tech-chip">LSTM</span><span class="tech-chip">PyTorch</span>
+                            </div>
                         </div>
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">FastAPI Energy Consumption Prediction App</h4>
-                            <p class="text-gray-300 mb-2">Web app with data upload, model training, and evaluation modules. Forecasts energy usage using historical data.</p>
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Energy Consumption Prediction</h4>
+                                <span class="cat-badge cat-ai ml-2 flex-shrink-0">AI/ML</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">FastAPI web app with data upload, model training, and evaluation modules. Forecasts energy usage from historical data.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">FastAPI</span><span class="tech-chip">Python</span><span class="tech-chip">ML</span>
+                            </div>
                         </div>
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Food Traceability Web App (Hackathon Project)</h4>
-                            <p class="text-gray-300 mb-2">Tracks food products using LOT numbers and verification statuses. Flask + LangChain for AI insights, Next.js frontend, Supabase for storage. Suggests meal plans and flags misclassifications using Gemini API.</p>
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Food Traceability App (Hackathon)</h4>
+                                <span class="cat-badge cat-ai ml-2 flex-shrink-0">AI / Web</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">Tracks food via LOT numbers. AI suggests meal plans and flags misclassifications. Flask + LangChain backend, Next.js frontend, Supabase storage.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">Flask</span><span class="tech-chip">LangChain</span><span class="tech-chip">Next.js</span><span class="tech-chip">Gemini API</span>
+                            </div>
                         </div>
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Arabic Finetuning of Mistral NeMo Model</h4>
-                            <p class="text-gray-300 mb-2">Finetuned Mistral NeMo for Arabic NLP tasks. Improved performance on classification and generation benchmarks.</p>
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Arabic Finetuning – Mistral NeMo</h4>
+                                <span class="cat-badge cat-ai ml-2 flex-shrink-0">LLM</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">Finetuned Mistral NeMo for Arabic NLP tasks. Improved performance on classification and generation benchmarks.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">Mistral</span><span class="tech-chip">Fine-tuning</span><span class="tech-chip">Arabic NLP</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Software & Desktop Apps -->
+
+                <!-- Web Platforms — including El Amir -->
                 <div>
-                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🖥️</span>Software & Desktop Apps</h3>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Voice-enabled AI Desktop Assistant</h4>
-                            <p class="text-gray-300 mb-2">PyQt5 GUI with integrated voice recognition and text-to-speech. Gemini API for chat, Azure TTS, YouTube & local music support.</p>
+                    <h3 class="text-xl font-bold mb-5 flex items-center gap-2 text-gray-200">
+                        <span>🌐</span> Web Platforms
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+
+                        <!-- ✨ NEW: El Amir Immobilier ✨ -->
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up" style="border-color: rgba(45,212,191,0.45);">
+                            <div class="flex items-start justify-between mb-1">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">El Amir Immobilier</h4>
+                                <span class="cat-badge cat-web ml-2 flex-shrink-0">Web App</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="live-badge">LIVE</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">
+                                Full-stack real estate &amp; vehicle management platform. Handles property listings, vehicle fleet tracking, and multi-role administration for a local business. Built with a clean PWA-ready architecture for mobile and desktop.
+                            </p>
+                            <div class="flex flex-wrap gap-1.5 mb-4">
+                                <span class="tech-chip">PWA</span>
+                                <span class="tech-chip">Vercel</span>
+                                <span class="tech-chip">Real Estate</span>
+                                <span class="tech-chip">Vehicle Mgmt</span>
+                            </div>
+                            <a href="https://elamir-immob.vercel.app" target="_blank" class="project-link-btn">
+                                <i class="fas fa-external-link-alt text-xs"></i> elamir-immob.vercel.app
+                            </a>
                         </div>
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Student Registration App</h4>
-                            <p class="text-gray-300 mb-2">PyQt5 desktop interface with OpenCV image capture. SQL database backend for secure student data storage.</p>
+
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Portfolio – lokmantouil.me</h4>
+                                <span class="cat-badge cat-web ml-2 flex-shrink-0">Web</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">Personal site showcasing projects, resume, and achievements. Interactive design aimed at recruiters and collaborators.</p>
+                            <a href="https://lokmantouil.me" target="_blank" class="project-link-btn">
+                                <i class="fas fa-external-link-alt text-xs"></i> lokmantouil.me
+                            </a>
                         </div>
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Basic Document Search Engine</h4>
-                            <p class="text-gray-300 mb-2">Built versions in C# and Python for keyword-based document retrieval. Used for quick demo and educational purposes.</p>
+
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Startup → Open Source Project</h4>
+                                <span class="cat-badge cat-web ml-2 flex-shrink-0">OSS</span>
+                            </div>
+                            <p class="text-gray-300 text-sm leading-relaxed">Originally developed as a private platform, later opened to the public to promote community collaboration and transparency.</p>
                         </div>
                     </div>
                 </div>
-                <!-- Web Platforms -->
+
+                <!-- Software & Desktop -->
                 <div>
-                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🌐</span>Web Platforms</h3>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Portfolio Website – lokmantouil.me</h4>
-                            <p class="text-gray-300 mb-2">Personal site showcasing projects, resume, and achievements. Interactive and clean design aimed at recruiters and collaborators.</p>
+                    <h3 class="text-xl font-bold mb-5 flex items-center gap-2 text-gray-200">
+                        <span>🖥️</span> Software &amp; Desktop Apps
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Voice-enabled AI Desktop Assistant</h4>
+                                <span class="cat-badge cat-ai ml-2 flex-shrink-0">AI / Desktop</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">PyQt5 GUI with voice recognition, TTS, Gemini chat, Azure TTS, YouTube &amp; local music support.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">PyQt5</span><span class="tech-chip">Gemini API</span><span class="tech-chip">Azure TTS</span>
+                            </div>
                         </div>
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Startup turned Open Source Project</h4>
-                            <p class="text-gray-300 mb-2">Originally developed as a private platform, later opened to the public. Promotes community collaboration and transparency.</p>
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Student Registration App</h4>
+                                <span class="cat-badge cat-edu ml-2 flex-shrink-0">Education</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">PyQt5 desktop interface with OpenCV image capture. SQL database backend for secure student data storage.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">PyQt5</span><span class="tech-chip">OpenCV</span><span class="tech-chip">SQL</span>
+                            </div>
+                        </div>
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Basic Document Search Engine</h4>
+                                <span class="cat-badge cat-web ml-2 flex-shrink-0">Tool</span>
+                            </div>
+                            <p class="text-gray-300 text-sm leading-relaxed">Keyword-based document retrieval built in C# and Python. Used for quick demos and educational purposes.</p>
                         </div>
                     </div>
                 </div>
-                <!-- IoT & Surveillance -->
+
+                <!-- IoT -->
                 <div>
-                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">📡</span>IoT & Surveillance</h3>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">CowGuard – Farm Surveillance System</h4>
-                            <p class="text-gray-300 mb-2">Designed and implemented the backend API for monitoring platform. SQL schema tracks cow states (eating, sleeping, licking, etc.) with admin, vet, and farmer roles.</p>
+                    <h3 class="text-xl font-bold mb-5 flex items-center gap-2 text-gray-200">
+                        <span>📡</span> IoT &amp; Surveillance
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">CowGuard – Farm Surveillance System</h4>
+                                <span class="cat-badge cat-iot ml-2 flex-shrink-0">IoT</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">Backend API for a livestock monitoring platform. SQL schema tracks cow states (eating, sleeping, licking…) with admin, vet, and farmer roles.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">REST API</span><span class="tech-chip">SQL</span><span class="tech-chip">IoT</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Teaching & Workshops -->
+
+                <!-- Teaching -->
                 <div>
-                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🧑‍🏫</span>Teaching & Workshops</h3>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Cybersecurity Fundamentals (Arabic)</h4>
-                            <p class="text-gray-300 mb-2">Delivered a beginner-friendly course for non-technical officers. Covered basics like network security, phishing, and safe practices.</p>
+                    <h3 class="text-xl font-bold mb-5 flex items-center gap-2 text-gray-200">
+                        <span>🧑‍🏫</span> Teaching &amp; Workshops
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Cybersecurity Fundamentals (Arabic)</h4>
+                                <span class="cat-badge cat-edu ml-2 flex-shrink-0">Education</span>
+                            </div>
+                            <p class="text-gray-300 text-sm leading-relaxed">Beginner-friendly course for non-technical officers. Covered network security, phishing, and safe practices.</p>
                         </div>
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Python & ML Basics for PhD Students</h4>
-                            <p class="text-gray-300 mb-2">Taught fundamentals of Python and introduced ML concepts. Emphasized practical, research-oriented workflows.</p>
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Python &amp; ML Basics for PhD Students</h4>
+                                <span class="cat-badge cat-edu ml-2 flex-shrink-0">Education</span>
+                            </div>
+                            <p class="text-gray-300 text-sm leading-relaxed">Taught Python fundamentals and ML concepts with a practical, research-oriented workflow.</p>
                         </div>
                     </div>
                 </div>
+
                 <!-- Game Dev -->
                 <div>
-                    <h3 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-2">🎮</span>Game Dev</h3>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">PRISM</h4>
-                            <p class="text-gray-300 mb-2">Puzzle-platformer focused on portal-based mechanics and dynamic physics. Unity game with minimalist art style and gravity-defying challenges.</p>
+                    <h3 class="text-xl font-bold mb-5 flex items-center gap-2 text-gray-200">
+                        <span>🎮</span> Game Dev
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">PRISM</h4>
+                                <span class="cat-badge cat-game ml-2 flex-shrink-0">Game</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">Puzzle-platformer focused on portal-based mechanics and dynamic physics. Unity game with minimalist art style and gravity-defying challenges.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">Unity</span><span class="tech-chip">C#</span>
+                            </div>
                         </div>
-                        <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                            <h4 class="text-xl font-semibold text-primary-300 mb-2">Procedural Dungeon Generator (WIP)</h4>
-                            <p class="text-gray-300 mb-2">Uses constraint programming to generate diverse dungeon layouts. Designed for Unity game prototypes.</p>
+                        <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                            <div class="flex items-start justify-between mb-3">
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Procedural Dungeon Generator (WIP)</h4>
+                                <span class="cat-badge cat-game ml-2 flex-shrink-0">Game / AI</span>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3 leading-relaxed">Uses constraint programming to generate diverse dungeon layouts for Unity game prototypes.</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="tech-chip">Unity</span><span class="tech-chip">C#</span><span class="tech-chip">Procedural Gen</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+            </div><!-- end projects -->
         </section>
 
         <hr class="section-divider my-16">
 
-        <!-- Skills -->
+        <!-- ═══ SKILLS ═══ -->
         <section id="skills" class="mb-20 animate-fade-in">
-            <div class="tarot-frame mb-12">
-                <h2 class="text-4xl font-bold mystical-text mb-4 flex items-center">
-                    <i class="fas fa-tools mr-4 emerald-glow"></i> 
+            <div class="tarot-frame mb-10">
+                <h2 class="text-3xl font-bold mystical-text flex items-center">
+                    <span class="section-icon-wrap"><i class="fas fa-tools emerald-glow text-xl"></i></span>
                     Skills
                 </h2>
             </div>
-            
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div class="animate-slide-up">
-                    <h3 class="text-xl font-semibold mb-6 text-primary-300 flex items-center">
-                        <i class="fas fa-code mr-2"></i>Languages
+                    <h3 class="text-base font-semibold mb-4 text-mystical-emerald flex items-center gap-2">
+                        <i class="fas fa-code"></i>Languages
                     </h3>
-                    <div class="flex flex-wrap gap-3">
+                    <div class="flex flex-wrap gap-2">
                         <span class="skill-pill px-4 py-2 rounded-full">Python</span>
                         <span class="skill-pill px-4 py-2 rounded-full">JavaScript</span>
                         <span class="skill-pill px-4 py-2 rounded-full">C#</span>
@@ -680,12 +910,11 @@
                         <span class="skill-pill px-4 py-2 rounded-full">PHP</span>
                     </div>
                 </div>
-                
                 <div class="animate-slide-up">
-                    <h3 class="text-xl font-semibold mb-6 text-primary-300 flex items-center">
-                        <i class="fas fa-robot mr-2"></i>AI/ML
+                    <h3 class="text-base font-semibold mb-4 text-mystical-emerald flex items-center gap-2">
+                        <i class="fas fa-robot"></i>AI / ML
                     </h3>
-                    <div class="flex flex-wrap gap-3">
+                    <div class="flex flex-wrap gap-2">
                         <span class="skill-pill px-4 py-2 rounded-full">PyTorch</span>
                         <span class="skill-pill px-4 py-2 rounded-full">TensorFlow</span>
                         <span class="skill-pill px-4 py-2 rounded-full">OpenCV</span>
@@ -694,30 +923,30 @@
                         <span class="skill-pill px-4 py-2 rounded-full">LangChain</span>
                     </div>
                 </div>
-                
                 <div class="animate-slide-up">
-                    <h3 class="text-xl font-semibold mb-6 text-primary-300 flex items-center">
-                        <i class="fas fa-globe mr-2"></i>Web
+                    <h3 class="text-base font-semibold mb-4 text-mystical-emerald flex items-center gap-2">
+                        <i class="fas fa-globe"></i>Web
                     </h3>
-                    <div class="flex flex-wrap gap-3">
+                    <div class="flex flex-wrap gap-2">
                         <span class="skill-pill px-4 py-2 rounded-full">FastAPI</span>
                         <span class="skill-pill px-4 py-2 rounded-full">Flask</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">Next.js</span>
                         <span class="skill-pill px-4 py-2 rounded-full">Vue.js</span>
                         <span class="skill-pill px-4 py-2 rounded-full">Supabase</span>
                         <span class="skill-pill px-4 py-2 rounded-full">ASP.NET</span>
                     </div>
                 </div>
-                
                 <div class="animate-slide-up">
-                    <h3 class="text-xl font-semibold mb-6 text-primary-300 flex items-center">
-                        <i class="fas fa-wrench mr-2"></i>Tools
+                    <h3 class="text-base font-semibold mb-4 text-mystical-emerald flex items-center gap-2">
+                        <i class="fas fa-wrench"></i>Tools
                     </h3>
-                    <div class="flex flex-wrap gap-3">
+                    <div class="flex flex-wrap gap-2">
                         <span class="skill-pill px-4 py-2 rounded-full">Git</span>
                         <span class="skill-pill px-4 py-2 rounded-full">Docker</span>
                         <span class="skill-pill px-4 py-2 rounded-full">Google Colab</span>
                         <span class="skill-pill px-4 py-2 rounded-full">VSCode</span>
                         <span class="skill-pill px-4 py-2 rounded-full">Unity</span>
+                        <span class="skill-pill px-4 py-2 rounded-full">Vercel</span>
                     </div>
                 </div>
             </div>
@@ -725,36 +954,34 @@
 
         <hr class="section-divider my-16">
 
-        <!-- Activities & Leadership -->
+        <!-- ═══ ACTIVITIES ═══ -->
         <section class="mb-20 animate-fade-in">
-            <div class="tarot-frame mb-12">
-                <h2 class="text-4xl font-bold mystical-text mb-4 flex items-center">
-                    <i class="fas fa-users mr-4 emerald-glow"></i> 
-                    Activities & Leadership
+            <div class="tarot-frame mb-10">
+                <h2 class="text-3xl font-bold mystical-text flex items-center">
+                    <span class="section-icon-wrap"><i class="fas fa-users emerald-glow text-xl"></i></span>
+                    Activities &amp; Leadership
                 </h2>
             </div>
-            
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-crown text-primary-400 text-2xl mr-3"></i>
-                        <h3 class="text-xl font-semibold text-primary-300">President – I-Tech Club El Tarf</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-crown text-accent-gold text-xl"></i>
+                        <h3 class="text-base font-semibold text-mystical-emerald">President – I-Tech Club El Tarf</h3>
                     </div>
-                    <ul class="space-y-2 text-gray-400">
-                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Led workshops on AI, game dev, and cybersecurity</li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Organized hackathons and university-wide coding events</li>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li class="flex items-start gap-2"><i class="fas fa-check-circle text-mystical-emerald mt-0.5"></i>Led workshops on AI, game dev, and cybersecurity</li>
+                        <li class="flex items-start gap-2"><i class="fas fa-check-circle text-mystical-emerald mt-0.5"></i>Organized hackathons and university-wide coding events</li>
                     </ul>
                 </div>
-                
-                <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-chalkboard-teacher text-primary-400 text-2xl mr-3"></i>
-                        <h3 class="text-xl font-semibold text-primary-300">Lecturer & Workshop Facilitator</h3>
+                <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-chalkboard-teacher text-accent-gold text-xl"></i>
+                        <h3 class="text-base font-semibold text-mystical-emerald">Lecturer &amp; Workshop Facilitator</h3>
                     </div>
-                    <ul class="space-y-2 text-gray-400">
-                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Taught Python for Machine Learning to PhD students</li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>Delivered cybersecurity sessions for professionals</li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-primary-400 mr-2 mt-1"></i>2 years teaching at Formation Center in El Tarf</li>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li class="flex items-start gap-2"><i class="fas fa-check-circle text-mystical-emerald mt-0.5"></i>Taught Python for Machine Learning to PhD students</li>
+                        <li class="flex items-start gap-2"><i class="fas fa-check-circle text-mystical-emerald mt-0.5"></i>Delivered cybersecurity sessions for professionals</li>
+                        <li class="flex items-start gap-2"><i class="fas fa-check-circle text-mystical-emerald mt-0.5"></i>2 years teaching at Formation Center in El Tarf</li>
                     </ul>
                 </div>
             </div>
@@ -762,156 +989,166 @@
 
         <hr class="section-divider my-16">
 
-        <!-- Certifications & Contact -->
+        <!-- ═══ CERTIFICATIONS ═══ -->
         <section id="contact" class="mb-20 animate-fade-in">
-            <div class="tarot-frame mb-12">
-                <h2 class="text-4xl font-bold mystical-text mb-4 flex items-center">
-                    <i class="fas fa-award mr-4 emerald-glow"></i> 
-                    Certifications & Languages
+            <div class="tarot-frame mb-10">
+                <h2 class="text-3xl font-bold mystical-text flex items-center">
+                    <span class="section-icon-wrap"><i class="fas fa-award emerald-glow text-xl"></i></span>
+                    Certifications &amp; Languages
                 </h2>
             </div>
-            
-            <div class="grid md:grid-cols-2 gap-8 mb-12">
-                <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-certificate text-primary-400 text-2xl mr-3"></i>
-                        <h3 class="text-xl font-semibold text-primary-300">EF SET English Certificate</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i class="fas fa-certificate text-accent-gold text-xl"></i>
+                        <h3 class="text-base font-semibold text-mystical-emerald">EF SET English Certificate</h3>
                     </div>
-                    <p class="text-gray-400 mb-2">C2 Proficient Level (80/100)</p>
-                    <p class="text-primary-300 font-medium">EF SET – Issued June 2024</p>
+                    <p class="text-gray-400 text-sm mb-1">C2 Proficient Level (80/100)</p>
+                    <p class="text-mystical-emerald text-sm font-medium">EF SET – June 2024</p>
                 </div>
-                
-                <div class="project-card p-8 rounded-2xl shadow-xl animate-slide-up">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-language text-primary-400 text-2xl mr-3"></i>
-                        <h3 class="text-xl font-semibold text-primary-300">Languages</h3>
+                <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-language text-accent-gold text-xl"></i>
+                        <h3 class="text-base font-semibold text-mystical-emerald">Languages</h3>
                     </div>
                     <div class="space-y-3">
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-300">Arabic</span>
-                            <span class="text-primary-300 font-medium">Native</span>
+                            <span class="text-gray-300 text-sm">Arabic</span>
+                            <span class="cat-badge cat-edu">Native</span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-300">English</span>
-                            <span class="text-primary-300 font-medium">Fluent</span>
+                            <span class="text-gray-300 text-sm">English</span>
+                            <span class="cat-badge cat-ai">Fluent · C2</span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-300">French</span>
-                            <span class="text-primary-300 font-medium">Professional</span>
+                            <span class="text-gray-300 text-sm">French</span>
+                            <span class="cat-badge cat-web">Professional</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
     </main>
 
-    <!-- Enhanced Footer -->
-    <footer class="glass-card py-12 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-primary-500/10 to-purple-500/10"></div>
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <div class="flex justify-center space-x-8 mb-8">
-                <a href="https://www.linkedin.com/in/lokman-touil-50ab90261/" target="_blank" class="text-gray-400 hover:text-primary-400 transition-all duration-300 transform hover:scale-110">
-                    <i class="fab fa-linkedin text-3xl"></i>
+    <!-- Footer -->
+    <footer class="glass-card py-10">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center gap-8 mb-6">
+                <a href="https://www.linkedin.com/in/lokman-touil-50ab90261/" target="_blank" class="text-gray-400 hover:text-mystical-emerald transition-all duration-300 hover:scale-110">
+                    <i class="fab fa-linkedin text-2xl"></i>
                 </a>
-                <a href="https://github.com/Lok1Tou1l" target="_blank" class="text-gray-400 hover:text-primary-400 transition-all duration-300 transform hover:scale-110">
-                    <i class="fab fa-github text-3xl"></i>
+                <a href="https://github.com/Lok1Tou1l" target="_blank" class="text-gray-400 hover:text-mystical-emerald transition-all duration-300 hover:scale-110">
+                    <i class="fab fa-github text-2xl"></i>
                 </a>
-                <a href="mailto:lokmantoui.dev@gmail.com" class="text-gray-400 hover:text-primary-400 transition-all duration-300 transform hover:scale-110">
-                    <i class="fas fa-envelope text-3xl"></i>
+                <a href="mailto:lokmantouil.dev@gmail.com" class="text-gray-400 hover:text-mystical-emerald transition-all duration-300 hover:scale-110">
+                    <i class="fas fa-envelope text-2xl"></i>
                 </a>
             </div>
-            <p class="text-gray-400 text-lg mb-4">© 2025 Lokman Touil. All rights reserved.</p>
-            <p class="text-gray-500">Built with passion and cutting-edge technology</p>
+            <p class="text-gray-400 text-sm mb-1">© 2025 Lokman Touil. All rights reserved.</p>
+            <p class="text-gray-600 text-xs">Built with passion &amp; cutting-edge technology</p>
         </div>
     </footer>
 
     <script>
-        // Enhanced Theme Toggle
+        // Theme Toggle — proper dark/light switching
         const themeToggle = document.getElementById('theme-toggle');
         const html = document.documentElement;
 
-        const savedTheme = 'dark'; // Force dark theme for better experience
-        html.classList.add(savedTheme);
-        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        // Restore saved preference (default: dark)
+        const saved = localStorage.getItem('theme') || 'dark';
+        if (saved === 'dark') {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+        updateToggleIcon();
 
         themeToggle.addEventListener('click', () => {
             html.classList.toggle('dark');
             const isDark = html.classList.contains('dark');
-            themeToggle.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateToggleIcon();
         });
 
-        // Scroll Progress Indicator
+        function updateToggleIcon() {
+            const isDark = html.classList.contains('dark');
+            themeToggle.innerHTML = isDark
+                ? '<i class="fas fa-moon"></i>'
+                : '<i class="fas fa-sun"></i>';
+        }
+
+        // Scroll Progress
         window.addEventListener('scroll', () => {
             const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
             document.getElementById('scrollIndicator').style.width = scrolled + '%';
         });
 
-        // Smooth Scrolling for Navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        // Active Nav Link on Scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            let current = '';
+            sections.forEach(s => {
+                if (window.scrollY >= s.offsetTop - 220) current = s.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href').substring(1) === current);
             });
         });
 
-        // Flip Card Animation
-        const flipCard = document.querySelector('.flip-card');
-        let isFlipped = false;
-        
-        flipCard.addEventListener('click', () => {
-            flipCard.classList.toggle('flipped');
-            isFlipped = !isFlipped;
+        // Smooth Scroll
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const el = document.getElementById(link.getAttribute('href').substring(1));
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
         });
 
-        // Auto-flip every 5 seconds
+        // Flip Card
+        const flipCard = document.querySelector('.flip-card');
+        flipCard.addEventListener('click', () => flipCard.classList.toggle('flipped'));
         setInterval(() => {
-            if (!flipCard.matches(':hover')) {
-                flipCard.classList.toggle('flipped');
-                isFlipped = !isFlipped;
-            }
+            if (!flipCard.matches(':hover')) flipCard.classList.toggle('flipped');
         }, 5000);
 
-        // Animated Particles Background
+        // Particles & Stars
         function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.width = Math.random() * 4 + 2 + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                particlesContainer.appendChild(particle);
+            const c = document.getElementById('particles');
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                const size = Math.random() * 4 + 2;
+                p.style.width = p.style.height = size + 'px';
+                p.style.animationDelay = Math.random() * 6 + 's';
+                p.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                c.appendChild(p);
+            }
+            for (let i = 0; i < 70; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                s.style.left = Math.random() * 100 + '%';
+                s.style.top = Math.random() * 100 + '%';
+                const sz = Math.random() * 2 + 1;
+                s.style.width = s.style.height = sz + 'px';
+                s.style.animationDelay = Math.random() * 3 + 's';
+                c.appendChild(s);
             }
         }
 
-        // Intersection Observer for Animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
+        // Intersection Observer for fade-in
+        const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-        // Observe all animated elements
         document.querySelectorAll('.animate-fade-in, .animate-slide-up').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px)';
@@ -919,124 +1156,13 @@
             observer.observe(el);
         });
 
-        // Contact Form Handler
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Simulate form submission
-            const button = e.target.querySelector('button');
-            const originalText = button.textContent;
-            
-            button.textContent = 'Sending...';
-            button.disabled = true;
-            
-            setTimeout(() => {
-                button.textContent = 'Message Sent!';
-                button.style.backgroundColor = '#10B981';
-                
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.disabled = false;
-                    button.style.backgroundColor = '';
-                    e.target.reset();
-                }, 2000);
-            }, 1500);
-        });
-
-        // Typing Effect for Hero Section
-        function typeWriter(element, text, speed = 100) {
-            let i = 0;
-            element.innerHTML = '';
-            
-            function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                }
-            }
-            
-            type();
-        }
-
-        // Enhanced Skill Pills Animation
-        document.querySelectorAll('.skill-pill').forEach(pill => {
-            pill.addEventListener('mouseenter', () => {
-                pill.style.transform = 'translateY(-2px) scale(1.05)';
-                pill.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.3)';
-            });
-            
-            pill.addEventListener('mouseleave', () => {
-                pill.style.transform = 'translateY(0) scale(1)';
-                pill.style.boxShadow = 'none';
-            });
-        });
-
-        // Parallax Effect for Hero Section
+        // Subtle parallax
         window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
             const hero = document.querySelector('#about');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.1}px)`;
-            }
+            if (hero) hero.style.transform = `translateY(${window.pageYOffset * 0.06}px)`;
         });
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            createStars();
-            
-            // Add stagger animation to project cards
-            const projectCards = document.querySelectorAll('.project-card');
-            projectCards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.1}s`;
-            });
-        });
-
-        // Navigation Active State
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-link');
-            
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('text-primary-400');
-                if (link.getAttribute('href').substring(1) === current) {
-                    link.classList.add('text-primary-400');
-                }
-            });
-        });
-
-        // Add loading animation
-        window.addEventListener('load', () => {
-            document.body.classList.add('loaded');
-        });
-
-        function createStars() {
-            const particlesContainer = document.getElementById('particles');
-            const starCount = 80; // Adjust for more/less stars
-
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                const size = Math.random() * 2 + 1;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                star.style.animationDelay = (Math.random() * 2) + 's';
-                particlesContainer.appendChild(star);
-            }
-        }
-
+        document.addEventListener('DOMContentLoaded', createParticles);
     </script>
 </body>
 </html>

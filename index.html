@@ -187,6 +187,7 @@
         /* ── Navigation ── */
         .nav-glass {
             backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             background: var(--bg-nav);
             border: 1px solid var(--border-nav);
             box-shadow: var(--shadow-nav);
@@ -196,14 +197,16 @@
             position: relative;
             font-family: 'Georgia', serif;
             font-size: 0.9rem;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.02em;
             color: #c8bfa8;
+            white-space: nowrap;
+            padding: 2px 2px;
             transition: color 0.3s;
         }
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -4px; left: 0;
+            bottom: -3px; left: 0;
             width: 0; height: 2px;
             background: linear-gradient(90deg, #D4AF37, #2DD4BF);
             transition: width 0.3s ease;
@@ -211,6 +214,16 @@
         .nav-link:hover { color: #2DD4BF; }
         .nav-link:hover::after, .nav-link.active::after { width: 100%; }
         .nav-link.active { color: #2DD4BF; }
+
+        @media (max-width: 640px) {
+            .nav-link {
+                font-size: 0.78rem;
+                letter-spacing: 0.01em;
+                padding: 1px 1px;
+            }
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* ── Tarot Frame ── */
         .tarot-frame {
@@ -502,16 +515,17 @@
     <div class="fixed inset-0 pointer-events-none z-0" id="particles"></div>
 
     <!-- Navigation -->
-    <nav class="nav-glass fixed top-0 left-1/2 transform -translate-x-1/2 z-50 mt-5 rounded-full px-8 py-3 w-[95vw] max-w-3xl">
-        <div class="flex items-center justify-between">
-            <div class="flex space-x-6">
+    <nav class="nav-glass fixed top-0 left-1/2 -translate-x-1/2 z-50 mt-3 sm:mt-5 rounded-full px-3.5 sm:px-6 md:px-7 py-2 sm:py-2.5 max-w-[96vw] w-fit shadow-2xl">
+        <div class="flex items-center gap-2 sm:gap-4 md:gap-5">
+            <div class="flex items-center gap-2.5 sm:gap-4 md:gap-6 overflow-x-auto no-scrollbar">
                 <a href="#about"     class="nav-link">About</a>
                 <a href="#education" class="nav-link">Education</a>
                 <a href="#projects"  class="nav-link">Projects</a>
                 <a href="#skills"    class="nav-link">Skills</a>
                 <a href="#contact"   class="nav-link">Contact</a>
             </div>
-            <button id="theme-toggle" style="color:var(--toggle-color);border:1px solid var(--toggle-border);background:var(--toggle-bg);" class="transition-all duration-300 p-2 rounded-full text-sm w-9 h-9 flex items-center justify-center hover:border-mystical-emerald hover:text-mystical-emerald">
+            <div class="h-3.5 sm:h-4 w-px bg-mystical-emerald/30 flex-shrink-0" aria-hidden="true"></div>
+            <button id="theme-toggle" style="color:var(--toggle-color);border:1px solid var(--toggle-border);background:var(--toggle-bg);" class="transition-all duration-300 w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0 rounded-full text-xs sm:text-sm flex items-center justify-center hover:border-mystical-emerald hover:text-mystical-emerald" aria-label="Toggle Theme">
                 <i class="fas fa-moon"></i>
             </button>
         </div>
@@ -758,12 +772,12 @@
 
                         <div class="project-card p-7 rounded-2xl shadow-xl animate-slide-up">
                             <div class="flex items-start justify-between mb-3">
-                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Portfolio – lokmantouil.me</h4>
+                                <h4 class="text-base font-semibold text-mystical-emerald leading-snug">Portfolio – Lok1Tou1l.github.io</h4>
                                 <span class="cat-badge cat-web ml-2 flex-shrink-0">Web</span>
                             </div>
                             <p class="text-gray-300 text-sm mb-3 leading-relaxed">Personal site showcasing projects, resume, and achievements. Interactive design aimed at recruiters and collaborators.</p>
-                            <a href="https://lokmantouil.me" target="_blank" class="project-link-btn">
-                                <i class="fas fa-external-link-alt text-xs"></i> lokmantouil.me
+                            <a href="https://lok1tou1l.github.io" target="_blank" class="project-link-btn">
+                                <i class="fas fa-external-link-alt text-xs"></i> lok1tou1l.github.io
                             </a>
                         </div>
 
